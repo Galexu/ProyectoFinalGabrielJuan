@@ -75,4 +75,16 @@ public class Libro {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
+    @Override
+    public String toString() {
+        return "Libro{" +
+                "isbn='" + isbn + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", autor='" + autor + '\'' +
+                ", anoPublicacion=" + anoPublicacion +
+                ", genero='" + genero + '\'' +
+                ", ejemplares=" + ejemplares +
+                '}';
+    }
 }
