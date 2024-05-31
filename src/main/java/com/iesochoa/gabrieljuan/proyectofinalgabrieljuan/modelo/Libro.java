@@ -20,6 +20,10 @@ public class Libro {
         this.portada = portada;
     }
 
+    public Libro() {
+
+    }
+
     public String getIsbn() {
         return isbn;
     }

@@ -10,6 +10,18 @@ public class Socio {
     private String email;
     private byte[] socioFoto;
 
+    public Socio(int socioId, String nombre, String direccion, String telefono, String email, byte[] socioFoto) {
+        this.socioId = socioId;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.email = email;
+        this.socioFoto = socioFoto;
+    }
+
+    public Socio() {
+    }
+
     public int getSocioId() {
         return socioId;
     }

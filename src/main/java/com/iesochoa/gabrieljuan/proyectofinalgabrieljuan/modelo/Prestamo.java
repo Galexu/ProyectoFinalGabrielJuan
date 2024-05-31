@@ -22,6 +22,9 @@ public class Prestamo {
         this.estado = estado;
     }
 
+    public Prestamo() {
+    }
+
     public int getPrestamoId() {
         return prestamoId;
     }
