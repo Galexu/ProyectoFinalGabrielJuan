@@ -1,23 +1,23 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.modelo;
 
+import java.util.Arrays;
+
 public class Libro {
     private String isbn;
     private String titulo;
     private String autor;
     private int anoPublicacion;
     private String genero;
-    private int ejemplares;
-    private String foto; // por pensar todavia como hacer el codigo para la foto
+    private byte[] portada;
 
 
-    public Libro(String isbn, String titulo, String autor, int anoPublicacion, String genero, int ejemplares, String foto) {
+    public Libro(String isbn, String titulo, String autor, int anoPublicacion, String genero, byte[] portada) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.autor = autor;
         this.anoPublicacion = anoPublicacion;
         this.genero = genero;
-        this.ejemplares = ejemplares;
-        this.foto = foto;
+        this.portada = portada;
     }
 
     public String getIsbn() {
@@ -60,20 +60,12 @@ public class Libro {
         this.genero = genero;
     }
 
-    public int getEjemplares() {
-        return ejemplares;
+    public byte[] getPortada() {
+        return portada;
     }
 
-    public void setEjemplares(int ejemplares) {
-        this.ejemplares = ejemplares;
-    }
-
-    public String getFoto() {
-        return foto;
-    }
-
-    public void setFoto(String foto) {
-        this.foto = foto;
+    public void setPortada(byte[] portada) {
+        this.portada = portada;
     }
 
     @Override
@@ -84,7 +76,6 @@ public class Libro {
                 ", autor='" + autor + '\'' +
                 ", anoPublicacion=" + anoPublicacion +
                 ", genero='" + genero + '\'' +
-                ", ejemplares=" + ejemplares +
                 '}';
     }
 }
