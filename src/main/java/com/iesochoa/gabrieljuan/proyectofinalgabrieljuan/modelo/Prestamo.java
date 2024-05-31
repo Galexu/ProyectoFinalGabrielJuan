@@ -1,54 +1,73 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.modelo;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class Prestamo {
-    private Libro libro;
-    private Socio socio;
-    private LocalDate fechaPrestamo;
-    private LocalDate fechaDevolucionPrevista;
+    private int prestamoId;
+    private int copiaId;
+    private int socioId;
+    private Date fechaPrestamo;
+    private Date fechaDevolucion;
+    private Date fechaLimite;
     private String estado;
-    private int idPrestamo;
 
-    public Prestamo(Libro libro, Socio socio, LocalDate fechaPrestamo, LocalDate fechaDevolucionPrevista, String estado, int idPrestamo) {
-        this.libro = libro;
-        this.socio = socio;
+    public Prestamo(int prestamoId, int copiaId, int socioId, Date fechaPrestamo, Date fechaDevolucion, Date fechaLimite, String estado) {
+        this.prestamoId = prestamoId;
+        this.copiaId = copiaId;
+        this.socioId = socioId;
         this.fechaPrestamo = fechaPrestamo;
-        this.fechaDevolucionPrevista = fechaDevolucionPrevista;
+        this.fechaDevolucion = fechaDevolucion;
+        this.fechaLimite = fechaLimite;
         this.estado = estado;
-        this.idPrestamo = idPrestamo;
     }
 
-    public Libro getLibro() {
-        return libro;
+    public int getPrestamoId() {
+        return prestamoId;
     }
 
-    public void setLibro(Libro libro) {
-        this.libro = libro;
+    public void setPrestamoId(int prestamoId) {
+        this.prestamoId = prestamoId;
     }
 
-    public Socio getSocio() {
-        return socio;
+    public int getCopiaId() {
+        return copiaId;
     }
 
-    public void setSocio(Socio socio) {
-        this.socio = socio;
+    public void setCopiaId(int copiaId) {
+        this.copiaId = copiaId;
     }
 
-    public LocalDate getFechaPrestamo() {
+    public int getSocioId() {
+        return socioId;
+    }
+
+    public void setSocioId(int socioId) {
+        this.socioId = socioId;
+    }
+
+    public Date getFechaPrestamo() {
         return fechaPrestamo;
     }
 
-    public void setFechaPrestamo(LocalDate fechaPrestamo) {
+    public void setFechaPrestamo(Date fechaPrestamo) {
         this.fechaPrestamo = fechaPrestamo;
     }
 
-    public LocalDate getFechaDevolucionPrevista() {
-        return fechaDevolucionPrevista;
+    public Date getFechaDevolucion() {
+        return fechaDevolucion;
     }
 
-    public void setFechaDevolucionPrevista(LocalDate fechaDevolucionPrevista) {
-        this.fechaDevolucionPrevista = fechaDevolucionPrevista;
+    public void setFechaDevolucion(Date fechaDevolucion) {
+        this.fechaDevolucion = fechaDevolucion;
+    }
+
+    public Date getFechaLimite() {
+        return fechaLimite;
+    }
+
+    public void setFechaLimite(Date fechaLimite) {
+        this.fechaLimite = fechaLimite;
     }
 
     public String getEstado() {
@@ -59,21 +78,15 @@ public class Prestamo {
         this.estado = estado;
     }
 
-    public int getIdPrestamo() {
-        return idPrestamo;
-    }
-
-    public void setIdPrestamo(int idPrestamo) {
-        this.idPrestamo = idPrestamo;
-    }
-
     @Override
     public String toString() {
         return "Prestamo{" +
-                "libro=" + libro +
-                ", socio=" + socio +
+                "prestamoId=" + prestamoId +
+                ", copiaId=" + copiaId +
+                ", socioId=" + socioId +
                 ", fechaPrestamo=" + fechaPrestamo +
-                ", fechaDevolucionPrevista=" + fechaDevolucionPrevista +
+                ", fechaDevolucion=" + fechaDevolucion +
+                ", fechaLimite=" + fechaLimite +
                 ", estado='" + estado + '\'' +
                 '}';
     }

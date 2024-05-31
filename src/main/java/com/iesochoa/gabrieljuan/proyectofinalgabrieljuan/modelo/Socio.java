@@ -1,28 +1,21 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.modelo;
 
+import java.util.Arrays;
+
 public class Socio {
-    private int numeroSocio;
+    private int socioId;
     private String nombre;
     private String direccion;
     private String telefono;
     private String email;
-    private String foto;
+    private byte[] socioFoto;
 
-    public Socio(int numeroSocio, String nombre, String direccion, String telefono, String email, String foto) {
-        this.numeroSocio = numeroSocio;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.telefono = telefono;
-        this.email = email;
-        this.foto = foto;
+    public int getSocioId() {
+        return socioId;
     }
 
-    public int getNumeroSocio() {
-        return numeroSocio;
-    }
-
-    public void setNumeroSocio(int numeroSocio) {
-        this.numeroSocio = numeroSocio;
+    public void setSocioId(int socioId) {
+        this.socioId = socioId;
     }
 
     public String getNombre() {
@@ -41,14 +34,6 @@ public class Socio {
         this.direccion = direccion;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -57,23 +42,31 @@ public class Socio {
         this.email = email;
     }
 
-    public String getFoto() {
-        return foto;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setFoto(String foto) {
-        this.foto = foto;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public byte[] getSocioFoto() {
+        return socioFoto;
+    }
+
+    public void setSocioFoto(byte[] socioFoto) {
+        this.socioFoto = socioFoto;
     }
 
     @Override
     public String toString() {
         return "Socio{" +
-                "numeroSocio=" + numeroSocio +
-                ", nombre='" + nombre + '\'' +
+                "socioId=" + socioId +
+                ", name='" + nombre + '\'' +
                 ", direccion='" + direccion + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", email='" + email + '\'' +
-                ", foto='" + foto + '\'' +
+                ", socioFoto=" + Arrays.toString(socioFoto) +
                 '}';
     }
 }
