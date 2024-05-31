@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+<AnchorPane fx:id="mainPane" prefHeight="620.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.controlador.ControladorInicio">
+    <children>
+        <AnchorPane layoutY="524.0" prefHeight="96.0" prefWidth="1200.0" style="-fx-border-color: darkgray; -fx-border-width: 2 0 0 0;">
+            <children>
+                <Button fx:id="libroButton" layoutX="33.0" layoutY="27.0" mnemonicParsing="false" onAction="#onClickLibro" prefHeight="43.0" prefWidth="99.0" text="Libro" />
+                <Button fx:id="prestamoButton" layoutX="288.0" layoutY="27.0" mnemonicParsing="false" onAction="#onClickPrestamo" prefHeight="43.0" prefWidth="99.0" text="Prestamo" />
+                <Button fx:id="socioButton" layoutX="159.0" layoutY="27.0" mnemonicParsing="false" onAction="#onClickSocio" prefHeight="43.0" prefWidth="105.0" text="Socio" />
+                <MenuButton contentDisplay="TOP" layoutX="1024.0" layoutY="27.0" mnemonicParsing="false" popupSide="TOP" prefHeight="43.0" prefWidth="141.0" text="Cambiar Tema">
+                    <items>
+                        <MenuItem fx:id="darkPrime" mnemonicParsing="false" onAction="#onClickDarkPrime" text="Dark" />
+                        <MenuItem fx:id="lightPrime" mnemonicParsing="false" onAction="#onClickLightPrime" text="Light" />
+                        <MenuItem fx:id="nordDark" mnemonicParsing="false" onAction="#onClickNordDark" text="Grisaceo" />
+                        <MenuItem fx:id="dracula" mnemonicParsing="false" onAction="#onClickDracula" text="Dracula" />
+                    </items>
+                </MenuButton>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
