@@ -1,4 +1,4 @@
-package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.dao;
+package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,25 +11,5 @@ public class ConexionDB {
 
     public static Connection conectar() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-
-//    public static void conectar() throws SQLException {
-//        try (final Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-//            System.out.println(connection.getCatalog());
-//        } catch (SQLException ex) {
-//            System.out.println("SQLException: " + ex.getMessage());
-//            System.out.println("SQLState: " + ex.getSQLState());
-//            System.out.println("VendorError: " + ex.getErrorCode());
-//        }
-//    }
-
-    public static void main(String[] args) {
-        try (final Connection connection = DriverManager.getConnection(URL, USER, PASSWORD)) {
-            System.out.println("Conexión establecida con éxito.");
-        } catch (SQLException ex) {
-            System.out.println("SQLException: " + ex.getMessage());
-            System.out.println("SQLState: " + ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
     }
 }

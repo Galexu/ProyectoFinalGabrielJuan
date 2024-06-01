@@ -1,4 +1,4 @@
-package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.controlador;
+package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores;
 
 import atlantafx.base.theme.*;
 import javafx.application.Application;

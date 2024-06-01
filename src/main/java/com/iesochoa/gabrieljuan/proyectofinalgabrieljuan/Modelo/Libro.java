@@ -1,17 +1,17 @@
-package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.modelo;
-
-import java.util.Arrays;
+package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo;
 
 public class Libro {
+    private int libroId;
     private String isbn;
     private String titulo;
     private String autor;
     private int anoPublicacion;
     private String genero;
     private byte[] portada;
+    private int disponibles;
 
-
-    public Libro(String isbn, String titulo, String autor, int anoPublicacion, String genero, byte[] portada) {
+    public Libro(int libroId, String isbn, String titulo, String autor, int anoPublicacion, String genero, byte[] portada) {
+        this.libroId = libroId;
         this.isbn = isbn;
         this.titulo = titulo;
         this.autor = autor;
@@ -22,6 +22,22 @@ public class Libro {
 
     public Libro() {
 
+    }
+
+    public int getDisponibles() {
+        return disponibles;
+    }
+
+    public void setDisponibles(int disponibles) {
+        this.disponibles = disponibles;
+    }
+
+    public int getLibroId() {
+        return libroId;
+    }
+
+    public void setLibroId(int libroId) {
+        this.libroId = libroId;
     }
 
     public String getIsbn() {
@@ -75,11 +91,13 @@ public class Libro {
     @Override
     public String toString() {
         return "Libro{" +
-                "isbn='" + isbn + '\'' +
+                "libroId=" + libroId +
+                ", isbn='" + isbn + '\'' +
                 ", titulo='" + titulo + '\'' +
                 ", autor='" + autor + '\'' +
                 ", anoPublicacion=" + anoPublicacion +
                 ", genero='" + genero + '\'' +
+                ", disponibles=" + disponibles +
                 '}';
     }
 }

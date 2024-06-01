@@ -1,4 +1,4 @@
-package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.modelo;
+package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo;
 
 import java.util.Arrays;
 

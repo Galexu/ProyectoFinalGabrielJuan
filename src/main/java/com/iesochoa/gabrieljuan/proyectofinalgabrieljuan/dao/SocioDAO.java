@@ -1,7 +1,6 @@
-package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.dao;
+package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO;
 
-import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.modelo.Socio;
-
+import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Socio;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -76,24 +75,26 @@ public class SocioDAO {
         }
     }
 
-    public List<Socio> buscarSocios(String nombre, String socioId) {
+    public List<Socio> buscarSocios(String criterioBusqueda) {
         List<Socio> socios = new ArrayList<>();
-        String sql = "SELECT * FROM socios WHERE nombre = ? OR socio_id = ?";
+        String sql = "SELECT * FROM socios WHERE nombre LIKE ? OR direccion LIKE ? OR telefono LIKE ? OR email LIKE ?";
 
         try (Connection con = ConexionDB.conectar();
              PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, nombre);
-            statement.setString(2, socioId);
+            String criterio = "%" + criterioBusqueda + "%";
+            statement.setString(1, criterio);
+            statement.setString(2, criterio);
+            statement.setString(3, criterio);
+            statement.setString(4, criterio);
             ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
                 Socio socio = new Socio();
+                socio.setSocioId(rs.getInt("socio_id"));
                 socio.setNombre(rs.getString("nombre"));
                 socio.setDireccion(rs.getString("direccion"));
-                socio.setSocioId(rs.getInt("socio_id"));
                 socio.setTelefono(rs.getString("telefono"));
                 socio.setEmail(rs.getString("email"));
-                socio.setSocioFoto(rs.getBytes("socio_foto"));
                 socios.add(socio);
             }
         } catch (SQLException e) {
@@ -102,20 +103,24 @@ public class SocioDAO {
         return socios;
     }
 
-    public static void main(String[] args) {
-        SocioDAO socioDAO = new SocioDAO();
-        Socio socio = new Socio(1, "Juan", "Calle Falsa 123", "123456789", "s", null);
+    public Socio obtenerSocioPorId(int socioId) {
+        String sql = "SELECT * FROM socios WHERE socio_id = ?";
 
-        socioDAO.agregarSocio(socio);
-        System.out.println(socioDAO.obtenerSocios());
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setInt(1, socioId);
+            ResultSet rs = statement.executeQuery();
 
-        socio.setNombre("Pedro");
-        socioDAO.actualizarSocio(socio);
-        System.out.println(socioDAO.obtenerSocios());
-
-//        socioDAO.eliminarSocio("1");
-//        System.out.println(socioDAO.obtenerSocios());
-//        System.out.println(socioDAO.buscarSocios("Pedro", "1"));
-
+            if (rs.next()) {
+                Socio socio = new Socio();
+                socio.setSocioId(rs.getInt("socio_id"));
+                socio.setNombre(rs.getString("nombre"));
+                socio.setSocioFoto(rs.getBytes("socio_foto"));
+                return socio;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
