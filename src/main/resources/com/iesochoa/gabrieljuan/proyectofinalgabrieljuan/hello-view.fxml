@@ -5,7 +5,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="mainPane" prefHeight="620.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.controlador.ControladorInicio">
+<AnchorPane fx:id="mainPane" prefHeight="620.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorInicio">
     <children>
         <AnchorPane layoutY="524.0" prefHeight="96.0" prefWidth="1200.0" style="-fx-border-color: darkgray; -fx-border-width: 2 0 0 0;">
             <children>

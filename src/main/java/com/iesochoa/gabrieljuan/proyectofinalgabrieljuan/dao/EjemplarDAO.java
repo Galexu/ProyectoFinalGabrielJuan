@@ -1,63 +1,57 @@
-package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.dao;
+package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO;
 
-import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.modelo.Ejemplar;
+import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Ejemplar;
+import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Libro;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EjemplarDAO {
     public void agregarEjemplar(Ejemplar ejemplar) {
-        String sql = "INSERT INTO ejemplares (isbn, disponible) VALUES (?, ?)";
+        String sql = "INSERT INTO ejemplares (libro_id, disponibles) VALUES (?, ?)";
 
         try (Connection con = ConexionDB.conectar();
              PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, ejemplar.getIsbn());
-            statement.setBoolean(2, ejemplar.isDisponible());
+            statement.setInt(1, ejemplar.getCopiaId());
+            statement.setInt(2, ejemplar.getDisponibles());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public List<Ejemplar> obtenerEjemplares() {
-        List<Ejemplar> ejemplares = new ArrayList<>();
-        String sql = "SELECT * FROM ejemplares";
+    public void actualizarEjemplar(Ejemplar ejemplar) {
+        String sql = "UPDATE ejemplares SET disponibles = ? WHERE libro_id = ?";
 
         try (Connection con = ConexionDB.conectar();
-             Statement statement = con.createStatement();
-             ResultSet rs = statement.executeQuery(sql)) {
-            while (rs.next()) {
-                Ejemplar ejemplar = new Ejemplar();
-                ejemplar.setCopiaId(rs.getInt("copia_id"));
-                ejemplar.setIsbn(rs.getString("isbn"));
-                ejemplar.setDisponible(rs.getBoolean("disponible"));
-                ejemplares.add(ejemplar);
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setInt(1, ejemplar.getDisponibles());
+            statement.setInt(2, ejemplar.getCopiaId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public int obtenerDisponibles(String isbn) {
+        String sql = "SELECT disponibles FROM ejemplares WHERE libro_id = (SELECT libro_id FROM libros WHERE isbn = ?)";
+
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setString(1, isbn);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("disponibles");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return ejemplares;
-    }
-
-    public void actualizarEjemplar(Ejemplar ejemplar) {
-        String sql = "UPDATE ejemplares SET isbn = ?, disponible = ? WHERE copia_id = ?";
-
-        try (Connection con = ConexionDB.conectar();
-             PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, ejemplar.getIsbn());
-            statement.setBoolean(2, ejemplar.isDisponible());
-            statement.setInt(3, ejemplar.getCopiaId());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        return -1;
     }
 
     public void eliminarEjemplar(int copiaId) {
-        String sql = "DELETE FROM ejemplares WHERE copia_id = ?";
+        String sql = "DELETE FROM ejemplares WHERE libro_id = ?";
 
         try (Connection con = ConexionDB.conectar();
              PreparedStatement statement = con.prepareStatement(sql)) {
@@ -68,15 +62,42 @@ public class EjemplarDAO {
         }
     }
 
-    public static void main(String[] args) {
-        EjemplarDAO ejemplarDAO = new EjemplarDAO();
-        Ejemplar ejemplar = new Ejemplar(1, "1234567890123", true);
-        ejemplarDAO.agregarEjemplar(ejemplar);
-        System.out.println(ejemplarDAO.obtenerEjemplares());
-        ejemplar.setDisponible(false);
-        ejemplarDAO.actualizarEjemplar(ejemplar);
-        System.out.println(ejemplarDAO.obtenerEjemplares());
-        ejemplarDAO.eliminarEjemplar(1);
-        System.out.println(ejemplarDAO.obtenerEjemplares());
+    public int encontrarIdEjemplar(String isbn) {
+        String sql = "SELECT copia_id FROM ejemplares WHERE libro_id = ?";
+
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setString(1, isbn);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("copia_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public Libro obtenerLibroPorId(int libroId) {
+        String sql = "SELECT * FROM libros WHERE libro_id = ?";
+
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setInt(1, libroId);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                Libro libro = new Libro();
+                libro.setLibroId(rs.getInt("libro_id"));
+                libro.setTitulo(rs.getString("titulo"));
+                libro.setPortada(rs.getBytes("portada"));
+                // Set other Libro properties as needed
+                return libro;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
