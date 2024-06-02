@@ -1,6 +1,5 @@
-package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.modelo;
+package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Prestamo {
@@ -11,6 +10,8 @@ public class Prestamo {
     private Date fechaDevolucion;
     private Date fechaLimite;
     private String estado;
+    private String tituloLibro;
+    private String nombreSocio;
 
     public Prestamo(int prestamoId, int copiaId, int socioId, Date fechaPrestamo, Date fechaDevolucion, Date fechaLimite, String estado) {
         this.prestamoId = prestamoId;
@@ -23,6 +24,22 @@ public class Prestamo {
     }
 
     public Prestamo() {
+    }
+
+    public String getTituloLibro() {
+        return tituloLibro;
+    }
+
+    public void setTituloLibro(String tituloLibro) {
+        this.tituloLibro = tituloLibro;
+    }
+
+    public String getNombreSocio() {
+        return nombreSocio;
+    }
+
+    public void setNombreSocio(String nombreSocio) {
+        this.nombreSocio = nombreSocio;
     }
 
     public int getPrestamoId() {

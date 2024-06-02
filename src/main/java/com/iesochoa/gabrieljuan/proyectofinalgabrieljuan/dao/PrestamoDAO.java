@@ -1,7 +1,6 @@
-package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.dao;
+package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO;
 
-import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.modelo.Prestamo;
-
+import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Prestamo;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +25,15 @@ public class PrestamoDAO {
 
     public List<Prestamo> obtenerPrestamos() {
         List<Prestamo> prestamos = new ArrayList<>();
-        String sql = "SELECT * FROM prestamos";
+        String sql = "SELECT prestamos.*, libros.titulo AS tituloLibro, socios.nombre AS nombreSocio " +
+                "FROM prestamos " +
+                "JOIN ejemplares ON prestamos.copia_id = ejemplares.copia_id " +
+                "JOIN libros ON ejemplares.libro_id = libros.libro_id " +
+                "JOIN socios ON prestamos.socio_id = socios.socio_id";
 
-        try (Connection conn = ConexionDB.conectar();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql);
+             ResultSet rs = statement.executeQuery()) {
             while (rs.next()) {
                 Prestamo prestamo = new Prestamo();
                 prestamo.setPrestamoId(rs.getInt("prestamo_id"));
@@ -40,12 +43,50 @@ public class PrestamoDAO {
                 prestamo.setFechaDevolucion(rs.getDate("fecha_devolucion"));
                 prestamo.setFechaLimite(rs.getDate("fecha_limite"));
                 prestamo.setEstado(rs.getString("estado"));
+                prestamo.setTituloLibro(rs.getString("tituloLibro"));
+                prestamo.setNombreSocio(rs.getString("nombreSocio"));
                 prestamos.add(prestamo);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        return prestamos;
+    }
+
+    public List<Prestamo> buscarPrestamos(String criterioBusqueda) {
+        List<Prestamo> prestamos = new ArrayList<>();
+        String sql = "SELECT prestamos.*, libros.titulo AS tituloLibro, socios.nombre AS nombreSocio " +
+                "FROM prestamos " +
+                "JOIN ejemplares ON prestamos.copia_id = ejemplares.copia_id " +
+                "JOIN libros ON ejemplares.libro_id = libros.libro_id " +
+                "JOIN socios ON prestamos.socio_id = socios.socio_id " +
+                "WHERE prestamos.prestamo_id LIKE ? OR prestamos.copia_id LIKE ? OR prestamos.socio_id LIKE ? OR prestamos.fecha_prestamo LIKE ? OR prestamos.fecha_devolucion LIKE ? OR prestamos.fecha_limite LIKE ? OR prestamos.estado LIKE ? OR libros.titulo LIKE ? OR socios.nombre LIKE ?";
+
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            String criterio = "%" + criterioBusqueda + "%";
+            for (int i = 1; i <= 9; i++) {
+                statement.setString(i, criterio);
+            }
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Prestamo prestamo = new Prestamo();
+                prestamo.setPrestamoId(rs.getInt("prestamo_id"));
+                prestamo.setCopiaId(rs.getInt("copia_id"));
+                prestamo.setSocioId(rs.getInt("socio_id"));
+                prestamo.setFechaPrestamo(rs.getDate("fecha_prestamo"));
+                prestamo.setFechaDevolucion(rs.getDate("fecha_devolucion"));
+                prestamo.setFechaLimite(rs.getDate("fecha_limite"));
+                prestamo.setEstado(rs.getString("estado"));
+                prestamo.setTituloLibro(rs.getString("tituloLibro"));
+                prestamo.setNombreSocio(rs.getString("nombreSocio"));
+                prestamos.add(prestamo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return prestamos;
     }
 
@@ -76,36 +117,6 @@ public class PrestamoDAO {
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void main(String[] args) {
-        PrestamoDAO prestamoDAO = new PrestamoDAO();
-        Prestamo prestamo = new Prestamo();
-        prestamo.setCopiaId(1);
-        prestamo.setSocioId(1);
-        prestamo.setFechaPrestamo(new Date(System.currentTimeMillis()));
-        prestamo.setFechaDevolucion(new Date(System.currentTimeMillis()));
-        prestamo.setFechaLimite(new Date(System.currentTimeMillis()));
-        prestamo.setEstado("Prestado");
-
-        prestamoDAO.agregarPrestamo(prestamo);
-        List<Prestamo> prestamos = prestamoDAO.obtenerPrestamos();
-        for (Prestamo p : prestamos) {
-            System.out.println(p);
-        }
-
-        prestamo.setEstado("Devuelto");
-        prestamoDAO.actualizarPrestamo(prestamo);
-        prestamos = prestamoDAO.obtenerPrestamos();
-        for (Prestamo p : prestamos) {
-            System.out.println(p);
-        }
-
-        prestamoDAO.eliminarPrestamo(prestamo.getPrestamoId());
-        prestamos = prestamoDAO.obtenerPrestamos();
-        for (Prestamo p : prestamos) {
-            System.out.println(p);
         }
     }
 }

@@ -92,7 +92,6 @@ public class EjemplarDAO {
                 libro.setLibroId(rs.getInt("libro_id"));
                 libro.setTitulo(rs.getString("titulo"));
                 libro.setPortada(rs.getBytes("portada"));
-                // Set other Libro properties as needed
                 return libro;
             }
         } catch (SQLException e) {

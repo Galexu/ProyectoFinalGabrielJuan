@@ -6,6 +6,13 @@ module com.iesochoa.gabrieljuan.proyectofinalgabrieljuan {
 
     opens com.iesochoa.gabrieljuan.proyectofinalgabrieljuan to javafx.fxml;
     exports com.iesochoa.gabrieljuan.proyectofinalgabrieljuan;
-    exports com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.controlador;
-    opens com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.controlador to javafx.fxml;
+    exports com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores;
+    opens com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores to javafx.fxml;
+    opens com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo to javafx.base;
+    exports com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorSocios;
+    opens com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorSocios to javafx.fxml;
+    exports com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros;
+    opens com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros to javafx.fxml;
+    exports com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorPrestamos;
+    opens com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorPrestamos to javafx.fxml;
 }
