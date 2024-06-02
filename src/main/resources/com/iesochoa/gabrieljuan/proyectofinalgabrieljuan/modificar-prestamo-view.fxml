@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="695.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorPrestamos.ControladorModificarPrestamo">
+    <children>
+        <Label layoutX="201.0" layoutY="22.0" text="Modificar Prestamo">
+            <font>
+                <Font name="System Bold" size="30.0" />
+            </font>
+        </Label>
+        <Button fx:id="modificarButton" layoutX="428.0" layoutY="628.0" onAction="#onClickModificar" prefHeight="39.0" prefWidth="91.0" text="Modificar" />
+        <Button fx:id="cancelarButton" layoutX="564.0" layoutY="628.0" onAction="#onClickCancelar" prefHeight="39.0" prefWidth="91.0" text="Cancelar" />
+        <Label layoutX="21.0" layoutY="67.0" text="Seleccionar Libro">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+            <effect>
+                <Bloom />
+            </effect>
+        </Label>
+        <Label layoutX="20.0" layoutY="141.0" text="Seleccionar Socio">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+        <Label layoutX="24.0" layoutY="212.0" text="Fecha Prestamo">
+            <font>
+                <Font name="System Bold" size="15.0" />
+            </font>
+        </Label>
+        <Label layoutX="24.0" layoutY="302.0" text="Fecha Devolucion">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="27.0" layoutY="382.0" text="Fecha Limite">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="27.0" layoutY="468.0" text="Estado">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+        <Button fx:id="seleccionarLibroButton" layoutX="21.0" layoutY="95.0" mnemonicParsing="false" onAction="#onClickSeleccionarLibro" prefHeight="31.0" prefWidth="106.0" text="Seleccion Libro" />
+        <Button fx:id="seleccionarSocioButton" layoutX="21.0" layoutY="162.0" mnemonicParsing="false" onAction="#onClickSeleccionarSocio" prefHeight="31.0" prefWidth="106.0" text="Seleccion Socio" />
+        <MenuButton fx:id="estadoMenuButton" layoutX="27.0" layoutY="493.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="174.0" text="Seleccionar Estado">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Pendiente" />
+                <MenuItem mnemonicParsing="false" text="Devuelto" />
+                <MenuItem mnemonicParsing="false" text="Vencido" />
+            </items>
+        </MenuButton>
+        <DatePicker fx:id="campoFechaPrestamo" layoutX="24.0" layoutY="233.0" prefHeight="45.0" prefWidth="174.0" />
+        <DatePicker fx:id="campoFechaLimite" layoutX="27.0" layoutY="407.0" prefHeight="45.0" prefWidth="174.0" />
+        <DatePicker fx:id="campoFechaDevolucion" layoutX="25.0" layoutY="327.0" prefHeight="45.0" prefWidth="174.0" />
+        <Label layoutX="155.0" layoutY="80.0" text="Titlulo Libro:" />
+        <Label layoutX="155.0" layoutY="102.0" text="Id Libro:" />
+        <Label layoutX="149.0" layoutY="154.0" text="Nombre Socio:" />
+        <Label layoutX="150.0" layoutY="178.0" text="Id Socio:" />
+        <ImageView fx:id="imagenSocioView" fitHeight="150.0" fitWidth="200.0" layoutX="221.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" />
+        <ImageView fx:id="imagenLibroView" fitHeight="150.0" fitWidth="200.0" layoutX="464.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
+    </children>
+</AnchorPane>
