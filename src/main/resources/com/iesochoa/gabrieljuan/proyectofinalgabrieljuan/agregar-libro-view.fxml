@@ -5,80 +5,81 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane prefHeight="656.0" prefWidth="699.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorAgregarLibro">
+<AnchorPane prefHeight="750.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorAgregarLibro">
     <children>
-        <TextField fx:id="campoIsbn" layoutX="19.0" layoutY="117.0" prefHeight="39.0" prefWidth="225.0" promptText="ISBN" />
-        <TextField fx:id="campoTitulo" layoutX="19.0" layoutY="194.0" prefHeight="39.0" prefWidth="225.0" promptText="Titulo" />
-        <TextField fx:id="campoAutor" layoutX="18.0" layoutY="269.0" prefHeight="39.0" prefWidth="225.0" promptText="Autor" />
-        <TextField fx:id="campoAnoPublicacion" layoutX="19.0" layoutY="371.0" prefHeight="39.0" prefWidth="225.0" promptText="Año Publicación" />
-        <TextField fx:id="campoEjemplares" layoutX="19.0" layoutY="580.0" prefHeight="39.0" prefWidth="225.0" promptText="Nº Ejemplares" />
-        <Button fx:id="agregarButton" layoutX="464.0" layoutY="586.0" onAction="#onClickAgregar" prefHeight="39.0" prefWidth="91.0" text="Agregar" />
-        <Button fx:id="cancelarButton" layoutX="574.0" layoutY="586.0" onAction="#onClickCancelar" prefHeight="39.0" prefWidth="91.0" text="Cancelar" />
-        <Button fx:id="seleccionarImagenButton" layoutX="405.0" layoutY="547.0" onAction="#seleccionarImagen" text="Seleccionar imagen" />
-        <Label layoutX="18.0" layoutY="96.0" text="ISBN">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-            <effect>
-                <Bloom />
-            </effect>
-        </Label>
-        <Label layoutX="18.0" layoutY="318.0" text="Año Publicación">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-        </Label>
-        <Label layoutX="18.0" layoutY="248.0" text="Autor">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-        </Label>
-        <Label layoutX="18.0" layoutY="172.0" text="Titulo">
-            <font>
-                <Font name="System Bold" size="16.0" />
-            </font>
-        </Label>
-        <Label layoutX="109.0" layoutY="23.0" text="Modificar Libro">
+        <Button fx:id="agregarButton" layoutX="515.0" layoutY="691.0" onAction="#onClickAgregar" prefHeight="39.0" prefWidth="91.0" text="Agregar" />
+        <Button fx:id="cancelarButton" layoutX="630.0" layoutY="691.0" onAction="#onClickCancelar" prefHeight="39.0" prefWidth="91.0" text="Cancelar" />
+        <Button fx:id="seleccionarImagenButton" layoutX="571.0" layoutY="647.0" onAction="#seleccionarImagen" text="Seleccionar imagen" />
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="277.0" layoutY="14.0" text="Agregar Libro">
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>
         </Label>
-        <MenuButton fx:id="generoMenuButton" layoutX="19.0" layoutY="454.0" mnemonicParsing="false" popupSide="TOP" prefHeight="57.0" prefWidth="164.0" text="Seleccionar Genero">
-            <items>
-                <MenuItem mnemonicParsing="false" text="Ficción" />
-                <MenuItem mnemonicParsing="false" text="Misterio" />
-                <MenuItem mnemonicParsing="false" text="Thriller" />
-                <MenuItem mnemonicParsing="false" text="Drama" />
-                <MenuItem mnemonicParsing="false" text="Romance" />
-                <MenuItem mnemonicParsing="false" text="Ciencia Ficción" />
-                <MenuItem mnemonicParsing="false" text="Fantasía" />
-                <MenuItem mnemonicParsing="false" text="Acción y Aventura" />
-                <MenuItem mnemonicParsing="false" text="Horror" />
-                <MenuItem mnemonicParsing="false" text="Autoayuda" />
-                <MenuItem mnemonicParsing="false" text="Salud" />
-                <MenuItem mnemonicParsing="false" text="Guía" />
-                <MenuItem mnemonicParsing="false" text="Viaje" />
-                <MenuItem mnemonicParsing="false" text="Infantil" />
-                <MenuItem mnemonicParsing="false" text="Cómics y Novelas Gráficas" />
-            </items>
-        </MenuButton>
         <TextFlow layoutX="226.0" layoutY="309.0" prefHeight="39.0" prefWidth="164.0" />
-        <ImageView fx:id="imagenLibroView" fitHeight="396.0" fitWidth="338.0" layoutX="301.0" layoutY="117.0" pickOnBounds="true" preserveRatio="true" />
-        <Label layoutX="18.0" layoutY="418.0" text="Genero">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-        </Label>
-        <Label layoutX="18.0" layoutY="549.0" text="Ejemplares">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-        </Label>
+        <ImageView fx:id="imagenLibroView" fitHeight="340.0" fitWidth="300.0" layoutX="365.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true" />
+      <VBox alignment="CENTER_LEFT" layoutX="23.0" layoutY="101.0" prefHeight="610.0" prefWidth="225.0" spacing="20.0">
+         <children>
+              <Label text="ISBN">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="campoIsbn" prefHeight="39.0" prefWidth="225.0" promptText="ISBN" />
+              <Label text="Titulo">
+                  <font>
+                      <Font name="System Bold" size="16.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="campoTitulo" prefHeight="39.0" prefWidth="225.0" promptText="Titulo" />
+              <Label text="Autor">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="campoAutor" prefHeight="39.0" prefWidth="225.0" promptText="Autor" />
+              <Label text="Año Publicación">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="campoAnoPublicacion" prefHeight="39.0" prefWidth="225.0" promptText="Año Publicación" />
+              <Label text="Genero">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+              </Label>
+              <MenuButton fx:id="generoMenuButton" mnemonicParsing="false" popupSide="TOP" prefHeight="57.0" prefWidth="164.0" text="Seleccionar Genero">
+                  <items>
+                      <MenuItem mnemonicParsing="false" text="Ficción" />
+                      <MenuItem mnemonicParsing="false" text="Misterio" />
+                      <MenuItem mnemonicParsing="false" text="Thriller" />
+                      <MenuItem mnemonicParsing="false" text="Drama" />
+                      <MenuItem mnemonicParsing="false" text="Romance" />
+                      <MenuItem mnemonicParsing="false" text="Ciencia Ficción" />
+                      <MenuItem mnemonicParsing="false" text="Fantasía" />
+                      <MenuItem mnemonicParsing="false" text="Acción y Aventura" />
+                      <MenuItem mnemonicParsing="false" text="Horror" />
+                      <MenuItem mnemonicParsing="false" text="Autoayuda" />
+                      <MenuItem mnemonicParsing="false" text="Salud" />
+                      <MenuItem mnemonicParsing="false" text="Guía" />
+                      <MenuItem mnemonicParsing="false" text="Viaje" />
+                      <MenuItem mnemonicParsing="false" text="Infantil" />
+                      <MenuItem mnemonicParsing="false" text="Cómics y Novelas Gráficas" />
+                  </items>
+              </MenuButton>
+              <Label text="Ejemplares">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="campoEjemplares" prefHeight="39.0" prefWidth="225.0" promptText="Nº Ejemplares" />
+         </children>
+      </VBox>
     </children>
 </AnchorPane>

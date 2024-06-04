@@ -18,17 +18,20 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 public class ControladorLibro {
+    @FXML
+    private Button modificarLibro;
+
     @FXML
     private AnchorPane mainPane;
 
@@ -72,11 +75,13 @@ public class ControladorLibro {
     private CheckBox checkTitulo;
 
     @FXML
-    private Button InicioButton;
-
-    @FXML
     private Label labelTituloLibro;
 
+    @FXML
+    private CheckBox checkAno;
+
+    @FXML
+    private CheckBox checkGenero;
 
     @FXML
     void onClickLightPrime(ActionEvent event) {
@@ -114,27 +119,41 @@ public class ControladorLibro {
     }
 
     @FXML
-    void onClickMostrarLibros(ActionEvent event) {
+    void onClickInicio(ActionEvent event) {
+        cargarVista("inicio-view.fxml");
+    }
+
+    @FXML
+    void onKeyReleasedBuscar(KeyEvent event) {
+        String criterioBusqueda = campoBusqueda.getText();
+
+        boolean buscarPorIsbn = checkIsbn.isSelected();
+        boolean buscarPorTitulo = checkTitulo.isSelected();
+        boolean buscarPorAutor = checkAutor.isSelected();
+        boolean buscarPorAno = checkAno.isSelected();
+        boolean buscarPorGenero = checkGenero.isSelected();
+
         LibroDAO libroDAO = new LibroDAO();
-        List<Libro> libros = libroDAO.obtenerLibros();
+        List<Libro> libros = null;
+        if (buscarPorIsbn || buscarPorTitulo || buscarPorAutor || buscarPorAno || buscarPorGenero) {
+            libros = libroDAO.buscarLibroCheck(criterioBusqueda, buscarPorIsbn, buscarPorTitulo, buscarPorAutor, buscarPorAno, buscarPorGenero);
+        } else {
+            libros = libroDAO.buscarLibro(criterioBusqueda);
+        }
 
         ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
         tablaLibros.setItems(observableList);
     }
 
     @FXML
-    void onClickBuscar(ActionEvent event) {
-        String criterioBusqueda = campoBusqueda.getText();
-
-        boolean buscarPorIsbn = checkIsbn.isSelected();
-        boolean buscarPorTitulo = checkTitulo.isSelected();
-        boolean buscarPorAutor = checkAutor.isSelected();
-
-        LibroDAO libroDAO = new LibroDAO();
-        List<Libro> libros = libroDAO.buscarLibroCheck(criterioBusqueda, buscarPorIsbn, buscarPorTitulo, buscarPorAutor);
-
-        ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
-        tablaLibros.setItems(observableList);
+    void onClickRefrescar(ActionEvent event) {
+        mostrarLibros();
+        campoBusqueda.clear();
+        checkAno.setSelected(false);
+        checkAutor.setSelected(false);
+        checkGenero.setSelected(false);
+        checkIsbn.setSelected(false);
+        checkTitulo.setSelected(false);
     }
 
     @FXML
@@ -159,8 +178,8 @@ public class ControladorLibro {
         Libro libroSeleccionado = tablaLibros.getSelectionModel().getSelectedItem();
 
         if (libroSeleccionado != null) {
-
             PrestamoDAO prestamoDAO = new PrestamoDAO();
+
             if (prestamoDAO.existePrestamoParaLibro(libroSeleccionado.getLibroId())) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
@@ -190,7 +209,7 @@ public class ControladorLibro {
                 LibroDAO libroDAO = new LibroDAO();
                 libroDAO.eliminarLibro(String.valueOf(libroSeleccionado.getIsbn()));
 
-                onClickMostrarLibros(event);
+                mostrarLibros();
             }
         }
     }
@@ -227,6 +246,14 @@ public class ControladorLibro {
         }
     }
 
+    private void mostrarLibros() {
+        LibroDAO libroDAO = new LibroDAO();
+        List<Libro> libros = libroDAO.obtenerLibros();
+
+        ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
+        tablaLibros.setItems(observableList);
+    }
+
     @FXML
     void initialize() {
         Styles.toggleStyleClass(tablaLibros, Styles.BORDERED);
@@ -252,21 +279,7 @@ public class ControladorLibro {
                 }
             }
         });
-
         mostrarLibros();
-    }
-
-    void mostrarLibros() {
-        LibroDAO libroDAO = new LibroDAO();
-        List<Libro> libros = libroDAO.obtenerLibros();
-
-        ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
-        tablaLibros.setItems(observableList);
-    }
-
-    @FXML
-    void onClickInicio(ActionEvent event) {
-        cargarVista("inicio-view.fxml");
     }
 }
 

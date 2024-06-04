@@ -23,7 +23,7 @@
                         <MenuItem fx:id="dracula" mnemonicParsing="false" onAction="#onClickDracula" text="Dracula" />
                     </items>
                 </MenuButton>
-            <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="70.0" prefWidth="459.0" spacing="20.0">
+            <HBox alignment="CENTER" layoutY="15.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
                <children>
                       <Button fx:id="libroButton" mnemonicParsing="false" onAction="#onClickLibro" prefHeight="45.0" prefWidth="100.0" text="Libro" />
                       <Button fx:id="socioButton" mnemonicParsing="false" onAction="#onClickSocio" prefHeight="45.0" prefWidth="100.0" text="Socio" />

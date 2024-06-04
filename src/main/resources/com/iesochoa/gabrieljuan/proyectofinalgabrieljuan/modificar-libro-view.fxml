@@ -5,78 +5,79 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="695.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorModificarLibro">
+<AnchorPane prefHeight="750.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorModificarLibro">
     <children>
-        <TextField fx:id="campoIsbn" layoutX="19.0" layoutY="117.0" prefHeight="39.0" prefWidth="225.0" promptText="ISBN" />
-        <TextField fx:id="campoAutor" layoutX="18.0" layoutY="269.0" prefHeight="39.0" prefWidth="225.0" promptText="Autor" />
-        <TextField fx:id="campoAnoPublicacion" layoutX="18.0" layoutY="360.0" prefHeight="39.0" prefWidth="225.0" promptText="Año Publicacion" />
-        <TextField fx:id="campoEjemplares" layoutX="19.0" layoutY="619.0" prefHeight="39.0" prefWidth="225.0" promptText="Nº Ejemplares" />
-        <Button fx:id="agregarButton" layoutX="398.0" layoutY="611.0" onAction="#onClickModificar" prefHeight="39.0" prefWidth="91.0" text="Modificar" />
-        <Button fx:id="cancelarButton" layoutX="529.0" layoutY="611.0" onAction="#onClickCancelar" prefHeight="39.0" prefWidth="91.0" text="Cancelar" />
-        <Button fx:id="seleccionarImagenButton" layoutX="405.0" layoutY="547.0" onAction="#seleccionarImagen" text="Seleccionar imagen" />
-        <Label layoutX="18.0" layoutY="96.0" text="ISBN">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-            <effect>
-                <Bloom />
-            </effect>
-        </Label>
-        <Label layoutX="19.0" layoutY="172.0" text="Titulo">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-        </Label>
-        <Label layoutX="18.0" layoutY="248.0" text="Autor">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-        </Label>
-        <Label layoutX="19.0" layoutY="335.0" text="Año Publicacion">
-            <font>
-                <Font name="System Bold" size="16.0" />
-            </font>
-        </Label>
-        <Label layoutX="19.0" layoutY="487.0" text="Genero">
-            <font>
-                <Font name="System Bold" size="16.0" />
-            </font>
-        </Label>
-        <Label layoutX="18.0" layoutY="586.0" text="Ejemplares">
-            <font>
-                <Font name="System Bold" size="16.0" />
-            </font>
-        </Label>
-        <Label layoutX="180.0" layoutY="22.0" text="Modificar Libro">
+        <Button fx:id="agregarButton" layoutX="515.0" layoutY="691.0" onAction="#onClickModificar" prefHeight="39.0" prefWidth="91.0" text="Modificar" />
+        <Button fx:id="cancelarButton" layoutX="630.0" layoutY="691.0" onAction="#onClickCancelar" prefHeight="39.0" prefWidth="91.0" text="Cancelar" />
+        <Button fx:id="seleccionarImagenButton" layoutX="571.0" layoutY="647.0" onAction="#seleccionarImagen" text="Seleccionar imagen" />
+        <Label layoutX="266.0" layoutY="14.0" text="Modificar Libro">
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>
         </Label>
-        <TextField fx:id="campoTitulo" layoutX="19.0" layoutY="193.0" prefHeight="39.0" prefWidth="225.0" promptText="Titulo" />
-        <ImageView fx:id="imagenLibroView" fitHeight="327.0" fitWidth="305.0" layoutX="291.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true" />
-        <MenuButton fx:id="generoMenuButton" layoutX="18.0" layoutY="519.0" mnemonicParsing="false" popupSide="TOP" prefHeight="57.0" prefWidth="164.0" text="Seleccionar Genero">
-            <items>
-                <MenuItem mnemonicParsing="false" text="Ficción" />
-                <MenuItem mnemonicParsing="false" text="Misterio" />
-                <MenuItem mnemonicParsing="false" text="Thriller" />
-                <MenuItem mnemonicParsing="false" text="Drama" />
-                <MenuItem mnemonicParsing="false" text="Romance" />
-                <MenuItem mnemonicParsing="false" text="Ciencia Ficción" />
-                <MenuItem mnemonicParsing="false" text="Fantasía" />
-                <MenuItem mnemonicParsing="false" text="Acción y Aventura" />
-                <MenuItem mnemonicParsing="false" text="Horror" />
-                <MenuItem mnemonicParsing="false" text="Autoayuda" />
-                <MenuItem mnemonicParsing="false" text="Salud" />
-                <MenuItem mnemonicParsing="false" text="Guía" />
-                <MenuItem mnemonicParsing="false" text="Viaje" />
-                <MenuItem mnemonicParsing="false" text="Infantil" />
-                <MenuItem mnemonicParsing="false" text="Cómics y Novelas Gráficas" />
-            </items>
-        </MenuButton>
+        <ImageView fx:id="imagenLibroView" fitHeight="340.0" fitWidth="300.0" layoutX="365.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true" />
+      <VBox alignment="CENTER_LEFT" layoutX="33.0" layoutY="111.0" prefHeight="610.0" prefWidth="225.0" spacing="20.0">
+         <children>
+            <Label text="ISBN">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoIsbn" prefHeight="39.0" prefWidth="225.0" promptText="ISBN" />
+            <Label text="Titulo">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoTitulo" prefHeight="39.0" prefWidth="225.0" promptText="Titulo" />
+            <Label text="Autor">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoAutor" prefHeight="39.0" prefWidth="225.0" promptText="Autor" />
+            <Label text="Año Publicación">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoAnoPublicacion" prefHeight="39.0" prefWidth="225.0" promptText="Año Publicación" />
+            <Label text="Genero">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <MenuButton fx:id="generoMenuButton" mnemonicParsing="false" popupSide="TOP" prefHeight="57.0" prefWidth="164.0" text="Seleccionar Genero">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Ficción" />
+                  <MenuItem mnemonicParsing="false" text="Misterio" />
+                  <MenuItem mnemonicParsing="false" text="Thriller" />
+                  <MenuItem mnemonicParsing="false" text="Drama" />
+                  <MenuItem mnemonicParsing="false" text="Romance" />
+                  <MenuItem mnemonicParsing="false" text="Ciencia Ficción" />
+                  <MenuItem mnemonicParsing="false" text="Fantasía" />
+                  <MenuItem mnemonicParsing="false" text="Acción y Aventura" />
+                  <MenuItem mnemonicParsing="false" text="Horror" />
+                  <MenuItem mnemonicParsing="false" text="Autoayuda" />
+                  <MenuItem mnemonicParsing="false" text="Salud" />
+                  <MenuItem mnemonicParsing="false" text="Guía" />
+                  <MenuItem mnemonicParsing="false" text="Viaje" />
+                  <MenuItem mnemonicParsing="false" text="Infantil" />
+                  <MenuItem mnemonicParsing="false" text="Cómics y Novelas Gráficas" />
+               </items>
+            </MenuButton>
+            <Label text="Ejemplares">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <TextField fx:id="campoEjemplares" prefHeight="39.0" prefWidth="225.0" promptText="Nº Ejemplares" />
+         </children>
+      </VBox>
     </children>
 </AnchorPane>

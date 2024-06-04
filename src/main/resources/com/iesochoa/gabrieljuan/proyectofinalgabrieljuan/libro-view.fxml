@@ -19,26 +19,22 @@
     <children>
         <AnchorPane layoutY="654.0" prefHeight="96.0" prefWidth="1300.0" style="-fx-border-color: darkgray; -fx-border-width: 2 0 0 0;">
             <children>
-            <HBox alignment="CENTER" layoutX="14.0" layoutY="14.0" prefHeight="70.0" prefWidth="459.0" spacing="20.0">
+            <HBox alignment="CENTER" layoutY="15.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
                <children>
                   <Button fx:id="libroButton" mnemonicParsing="false" onAction="#onClickLibro" prefHeight="45.0" prefWidth="100.0" text="Libro" />
                   <Button fx:id="socioButton" mnemonicParsing="false" onAction="#onClickSocio" prefHeight="45.0" prefWidth="100.0" text="Socio" />
                   <Button fx:id="prestamoButton" mnemonicParsing="false" onAction="#onClickPrestamo" prefHeight="45.0" prefWidth="100.0" text="Prestamo" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" layoutX="1017.0" layoutY="11.0" prefHeight="77.0" prefWidth="283.0" spacing="20.0">
-               <children>
-                  <Button fx:id="InicioButton" mnemonicParsing="false" onAction="#onClickInicio" prefHeight="45.0" prefWidth="100.0" text="Inicio" />
-                      <MenuButton contentDisplay="TOP" mnemonicParsing="false" popupSide="TOP" prefHeight="45.0" prefWidth="140.0" text="Cambiar Tema">
-                          <items>
-                              <MenuItem fx:id="darkPrime" mnemonicParsing="false" onAction="#onClickDarkPrime" text="Dark" />
-                              <MenuItem fx:id="lightPrime" mnemonicParsing="false" onAction="#onClickLightPrime" text="Light" />
-                              <MenuItem fx:id="nordDark" mnemonicParsing="false" onAction="#onClickNordDark" text="Grisaceo" />
-                              <MenuItem fx:id="dracula" mnemonicParsing="false" onAction="#onClickDracula" text="Dracula" />
-                          </items>
-                      </MenuButton>
-               </children>
-            </HBox>
+            <Button fx:id="InicioButton" layoutX="1027.0" layoutY="28.0" mnemonicParsing="false" onAction="#onClickInicio" prefHeight="45.0" prefWidth="100.0" text="Inicio" />
+                <MenuButton contentDisplay="TOP" layoutX="1145.0" layoutY="27.0" mnemonicParsing="false" popupSide="TOP" prefHeight="45.0" prefWidth="140.0" text="Cambiar Tema">
+                    <items>
+                        <MenuItem fx:id="darkPrime" mnemonicParsing="false" onAction="#onClickDarkPrime" text="Dark" />
+                        <MenuItem fx:id="lightPrime" mnemonicParsing="false" onAction="#onClickLightPrime" text="Light" />
+                        <MenuItem fx:id="nordDark" mnemonicParsing="false" onAction="#onClickNordDark" text="Grisaceo" />
+                        <MenuItem fx:id="dracula" mnemonicParsing="false" onAction="#onClickDracula" text="Dracula" />
+                    </items>
+                </MenuButton>
             </children>
         </AnchorPane>
         <Accordion layoutX="391.0" layoutY="109.0" />
@@ -59,32 +55,41 @@
                 <Cursor fx:constant="HAND" />
             </cursor>
         </TableView>
-        <Label layoutX="103.0" layoutY="14.0" prefHeight="45.0" prefWidth="275.0" text="Gestion Libros">
+        <Label alignment="CENTER" layoutX="93.0" layoutY="14.0" prefHeight="45.0" prefWidth="275.0" text="Gestion Libros">
             <font>
                 <Font name="System Bold" size="38.0" />
             </font>
         </Label>
-        <ImageView fx:id="imagenLibroView" fitHeight="340.0" fitWidth="300.0" layoutX="90.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true" />
-        <CheckBox fx:id="checkIsbn" layoutX="79.0" layoutY="488.0" text="ISBN" />
-        <CheckBox fx:id="checkTitulo" layoutX="143.0" layoutY="488.0" text="Titulo" />
-        <CheckBox fx:id="checkAutor" contentDisplay="BOTTOM" layoutX="208.0" layoutY="488.0" text="Autor" />
-      <HBox alignment="CENTER" layoutX="14.0" layoutY="575.0" prefHeight="70.0" prefWidth="459.0" spacing="20.0">
+        <ImageView fx:id="imagenLibroView" fitHeight="340.0" fitWidth="300.0" layoutX="68.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" />
+      <HBox alignment="CENTER" layoutY="575.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
          <children>
               <Button fx:id="modificarLibro" mnemonicParsing="false" onAction="#onClickModificarLibro" prefHeight="45.0" prefWidth="100.0" text="Modificar" textAlignment="CENTER" wrapText="true" />
               <Button fx:id="borrarLibro" mnemonicParsing="false" onAction="#onClickBorrarLibro" prefHeight="45.0" prefWidth="100.0" text="Borrar" />
               <Button fx:id="agregarLibro" mnemonicParsing="false" onAction="#onClickAgregarLibro" prefHeight="45.0" prefWidth="100.0" text="Agregar" />
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="71.0" layoutY="505.0" prefHeight="70.0" prefWidth="346.0">
+      <HBox alignment="CENTER" layoutX="45.0" layoutY="520.0" prefHeight="55.0" prefWidth="346.0">
          <children>
-              <Button fx:id="botonBuscar" mnemonicParsing="false" onAction="#onClickBuscar" prefHeight="30.0" prefWidth="100.0" text="Busqueda" />
-              <TextField fx:id="campoBusqueda" prefHeight="30.0" prefWidth="215.0" />
+              <TextField fx:id="campoBusqueda" alignment="CENTER" onKeyReleased="#onKeyReleasedBuscar" prefHeight="35.0" prefWidth="215.0" />
+              <Button fx:id="botonRefrescar" mnemonicParsing="false" onAction="#onClickRefrescar" prefHeight="35.0" prefWidth="38.0" text="⟳">
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
          </children>
       </HBox>
-      <Label fx:id="labelTituloLibro" alignment="CENTER" contentDisplay="CENTER" layoutX="142.0" layoutY="70.0" prefHeight="55.0" prefWidth="204.0">
+      <Label fx:id="labelTituloLibro" alignment="CENTER" contentDisplay="CENTER" layoutX="116.0" layoutY="69.0" prefHeight="55.0" prefWidth="204.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
+      <HBox alignment="CENTER" layoutX="17.0" layoutY="485.0" prefHeight="35.0" prefWidth="403.0" spacing="15.0">
+         <children>
+              <CheckBox fx:id="checkIsbn" text="ISBN" />
+              <CheckBox fx:id="checkTitulo" text="Titulo" />
+              <CheckBox fx:id="checkAutor" contentDisplay="BOTTOM" text="Autor" />
+            <CheckBox fx:id="checkAno" contentDisplay="BOTTOM" text="Año" />
+            <CheckBox fx:id="checkGenero" contentDisplay="BOTTOM" text="Genero" />
+         </children>
+      </HBox>
     </children>
 </AnchorPane>
