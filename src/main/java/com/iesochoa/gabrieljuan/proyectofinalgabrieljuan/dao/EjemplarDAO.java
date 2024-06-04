@@ -62,6 +62,18 @@ public class EjemplarDAO {
         }
     }
 
+    public void reducirEjemplar(String isbn) {
+        String sql = "UPDATE ejemplares SET disponibles = disponibles - 1 WHERE libro_id = ?";
+
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setString(1, isbn);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public int encontrarIdEjemplar(String isbn) {
         String sql = "SELECT copia_id FROM ejemplares WHERE libro_id = ?";
 
@@ -91,6 +103,31 @@ public class EjemplarDAO {
                 Libro libro = new Libro();
                 libro.setLibroId(rs.getInt("libro_id"));
                 libro.setTitulo(rs.getString("titulo"));
+                libro.setPortada(rs.getBytes("portada"));
+                return libro;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Libro obtenerLibroPorCopiaId(int copiaId) {
+        String sql = "SELECT * FROM libros WHERE libro_id = (SELECT libro_id FROM ejemplares WHERE copia_id = ?)";
+
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setInt(1, copiaId);
+            ResultSet rs = statement.executeQuery();
+
+            if (rs.next()) {
+                Libro libro = new Libro();
+                libro.setLibroId(rs.getInt("libro_id"));
+                libro.setIsbn(rs.getString("isbn"));
+                libro.setTitulo(rs.getString("titulo"));
+                libro.setAutor(rs.getString("autor"));
+                libro.setAnoPublicacion(rs.getInt("ano_publicacion"));
+                libro.setGenero(rs.getString("genero"));
                 libro.setPortada(rs.getBytes("portada"));
                 return libro;
             }

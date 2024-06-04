@@ -89,6 +89,8 @@ public class ControladorPrestamoSeleccionarSocio {
                 }
             }
         });
+
+        mostraSocios();
     }
 
     public interface OnSocioSelectedListener {
@@ -97,5 +99,13 @@ public class ControladorPrestamoSeleccionarSocio {
 
     public void setOnSocioSelectedListener(OnSocioSelectedListener listener) {
         this.socioSelectedListener = listener;
+    }
+
+    void mostraSocios() {
+        SocioDAO socioDAO = new SocioDAO();
+        List<Socio> socio = socioDAO.obtenerSocios();
+
+        ObservableList<Socio> observableList = FXCollections.observableArrayList(socio);
+        tablaSocios.setItems(observableList);
     }
 }

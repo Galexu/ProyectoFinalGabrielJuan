@@ -59,6 +59,12 @@ public class ControladorAgregarPrestamo implements ControladorPrestamoSelecciona
 
     private byte[] imagenSocio;
 
+    private Runnable onPrestamoChangeListener;
+
+    public void setOnPrestamoChangeListener(Runnable onLibroChangeListener) {
+        this.onPrestamoChangeListener = onLibroChangeListener;
+    }
+
     @FXML
     void onClickSeleccionarLibro(ActionEvent event) {
         try {
@@ -99,10 +105,19 @@ public class ControladorAgregarPrestamo implements ControladorPrestamoSelecciona
     void onClickCancelar(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+
+        if (onPrestamoChangeListener != null) {
+            onPrestamoChangeListener.run();
+        }
     }
 
     @FXML
     void onClickAgregar(ActionEvent event) throws ParseException {
+        if (!validarCampos()) {
+            mostrarAlerta();
+            return;
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String fechaPrestamo = campoFechaPrestamo.getValue().format(formatter);
         String fechaDevolucion = campoFechaDevolucion.getValue().format(formatter);
@@ -125,9 +140,14 @@ public class ControladorAgregarPrestamo implements ControladorPrestamoSelecciona
 
         PrestamoDAO prestamoDAO = new PrestamoDAO();
         prestamoDAO.agregarPrestamo(prestamo);
+        ejemplarDAO.reducirEjemplar(labelLibroId.getText());
 
         Stage stage = (Stage) labelLibroId.getScene().getWindow();
         stage.close();
+
+        if (onPrestamoChangeListener != null) {
+            onPrestamoChangeListener.run();
+        }
     }
 
     @FXML
@@ -178,5 +198,38 @@ public class ControladorAgregarPrestamo implements ControladorPrestamoSelecciona
         } else {
             imagenSocioView.setImage(null);
         }
+    }
+
+    private boolean validarCampos() {
+        if (campoFechaPrestamo.getValue() == null || campoFechaDevolucion.getValue() == null || campoFechaLimite.getValue() == null) {
+            return false;
+        }
+
+        if (labelLibroId.getText().isEmpty()) {
+            return false;
+        }
+
+        if (labelSocioId.getText().isEmpty()) {
+            return false;
+        }
+
+        if (estadoMenuButton.getText().equals("Seleccionar Estado")) {
+            return false;
+        }
+
+        if (campoFechaDevolucion.getValue().isBefore(campoFechaPrestamo.getValue()) || campoFechaLimite.getValue().isBefore(campoFechaPrestamo.getValue())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void mostrarAlerta() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Por favor, introduzca los campos correctamente.");
+
+        alert.showAndWait();
     }
 }

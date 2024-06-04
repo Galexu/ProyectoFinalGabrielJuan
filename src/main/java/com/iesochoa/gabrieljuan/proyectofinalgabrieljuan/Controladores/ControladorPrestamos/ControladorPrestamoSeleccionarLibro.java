@@ -21,6 +21,10 @@ import java.util.List;
 public class ControladorPrestamoSeleccionarLibro {
 
     @FXML
+    private TableColumn<?, ?> EjemplaresColumn;
+
+
+    @FXML
     private TableColumn<?, ?> anoPublicacionColumn;
 
     @FXML
@@ -65,7 +69,7 @@ public class ControladorPrestamoSeleccionarLibro {
     @FXML
     void onClickMostrarLibros(ActionEvent event) {
         LibroDAO libroDAO = new LibroDAO();
-        List<Libro> libros = libroDAO.obtenerLibros();
+        List<Libro> libros = libroDAO.obtenerLibrosPrestamo();
 
         ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
         tablaLibros.setItems(observableList);
@@ -94,6 +98,8 @@ public class ControladorPrestamoSeleccionarLibro {
                 }
             }
         });
+
+        muestraLibros();
     }
 
     public interface OnLibroSelectedListener {
@@ -102,5 +108,13 @@ public class ControladorPrestamoSeleccionarLibro {
 
     public void setOnLibroSelectedListener(OnLibroSelectedListener listener) {
         this.libroSelectedListener = listener;
+    }
+
+    void muestraLibros() {
+        LibroDAO libroDAO = new LibroDAO();
+        List<Libro> libros = libroDAO.obtenerLibrosPrestamo();
+
+        ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
+        tablaLibros.setItems(observableList);
     }
 }

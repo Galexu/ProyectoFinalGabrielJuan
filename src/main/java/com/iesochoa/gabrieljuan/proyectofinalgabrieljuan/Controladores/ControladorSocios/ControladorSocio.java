@@ -1,6 +1,8 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorSocios;
 
 import atlantafx.base.theme.*;
+import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorAgregarLibro;
+import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.PrestamoDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.SocioDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Libro;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Socio;
@@ -28,6 +30,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class ControladorSocio {
+
+    @FXML
+    private Label labelNombreSocio;
+
+    @FXML
+    private Button InicioButton;
 
     @FXML
     private AnchorPane mainPane;
@@ -106,6 +114,9 @@ public class ControladorSocio {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iesochoa/gabrieljuan/proyectofinalgabrieljuan/agregar-socio-view.fxml"));
             Parent root = loader.load();
 
+            ControladorAgregarSocio controlador = loader.getController();
+            controlador.setOnSocioChangeListener(this::mostrarSocios);
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();
@@ -119,6 +130,21 @@ public class ControladorSocio {
         Socio socioSeleccionado = tablaSocios.getSelectionModel().getSelectedItem();
 
         if (socioSeleccionado != null) {
+
+            PrestamoDAO prestamoDAO = new PrestamoDAO();
+            if (prestamoDAO.existePrestamoParaSocio(socioSeleccionado.getSocioId())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("No se puede borrar el socio porque existe un préstamo para este socio, primero elimine el prestamo correspondiente si asi lo desea.");
+
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/favicon.png")));
+
+                alert.showAndWait();
+                return;
+            }
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmación de borrado");
             alert.setHeaderText(null);
@@ -128,6 +154,8 @@ public class ControladorSocio {
             alertStage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/favicon.png")));
 
             Optional<ButtonType> result = alert.showAndWait();
+
+
             if (result.get() == ButtonType.OK) {
                 SocioDAO socioDAO = new SocioDAO();
                 socioDAO.eliminarSocio(String.valueOf(socioSeleccionado.getSocioId()));
@@ -147,6 +175,7 @@ public class ControladorSocio {
 
                 ControladorModificarSocio controlador = loader.getController();
                 controlador.posicionarSocio(socioSeleccionado);
+                controlador.setOnSocioChangeListener(this::mostrarSocios);
 
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
@@ -191,6 +220,7 @@ public class ControladorSocio {
         tablaSocios.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 Socio socioSeleccionado = newSelection;
+                labelNombreSocio.setText(socioSeleccionado.getNombre());
                 byte[] portadaBytes = socioSeleccionado.getSocioFoto();
                 if (portadaBytes != null) {
                     Image image = new Image(new ByteArrayInputStream(portadaBytes));
@@ -200,6 +230,21 @@ public class ControladorSocio {
                 }
             }
         });
+
+        mostrarSocios();
+    }
+
+    void mostrarSocios() {
+        SocioDAO socioDAO = new SocioDAO();
+        List<Socio> socios = socioDAO.obtenerSocios();
+
+        ObservableList<Socio> observableList = FXCollections.observableArrayList(socios);
+        tablaSocios.setItems(observableList);
+    }
+
+    @FXML
+    void onClickInicio(ActionEvent event) {
+        cargarVista("inicio-view.fxml");
     }
 }
 

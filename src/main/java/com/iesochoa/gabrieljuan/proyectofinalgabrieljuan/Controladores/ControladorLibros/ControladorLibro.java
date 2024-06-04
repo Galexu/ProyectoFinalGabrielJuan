@@ -3,6 +3,7 @@ package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.Controla
 import atlantafx.base.theme.*;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.EjemplarDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.LibroDAO;
+import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.PrestamoDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Libro;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -62,6 +63,22 @@ public class ControladorLibro {
     private ImageView imagenLibroView;
 
     @FXML
+    private CheckBox checkAutor;
+
+    @FXML
+    private CheckBox checkIsbn;
+
+    @FXML
+    private CheckBox checkTitulo;
+
+    @FXML
+    private Button InicioButton;
+
+    @FXML
+    private Label labelTituloLibro;
+
+
+    @FXML
     void onClickLightPrime(ActionEvent event) {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
     }
@@ -109,8 +126,12 @@ public class ControladorLibro {
     void onClickBuscar(ActionEvent event) {
         String criterioBusqueda = campoBusqueda.getText();
 
+        boolean buscarPorIsbn = checkIsbn.isSelected();
+        boolean buscarPorTitulo = checkTitulo.isSelected();
+        boolean buscarPorAutor = checkAutor.isSelected();
+
         LibroDAO libroDAO = new LibroDAO();
-        List<Libro> libros = libroDAO.buscarLibro(criterioBusqueda);
+        List<Libro> libros = libroDAO.buscarLibroCheck(criterioBusqueda, buscarPorIsbn, buscarPorTitulo, buscarPorAutor);
 
         ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
         tablaLibros.setItems(observableList);
@@ -121,6 +142,9 @@ public class ControladorLibro {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iesochoa/gabrieljuan/proyectofinalgabrieljuan/agregar-libro-view.fxml"));
             Parent root = loader.load();
+
+            ControladorAgregarLibro controlador = loader.getController();
+            controlador.setOnLibroChangeListener(this::mostrarLibros);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -135,6 +159,21 @@ public class ControladorLibro {
         Libro libroSeleccionado = tablaLibros.getSelectionModel().getSelectedItem();
 
         if (libroSeleccionado != null) {
+
+            PrestamoDAO prestamoDAO = new PrestamoDAO();
+            if (prestamoDAO.existePrestamoParaLibro(libroSeleccionado.getLibroId())) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("No se puede borrar el libro porque existe un préstamo para este libro, primero elimine el prestamo correspondiente si asi lo desea.");
+
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/favicon.png")));
+
+                alert.showAndWait();
+                return;
+            }
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirmación de borrado");
             alert.setHeaderText(null);
@@ -150,6 +189,7 @@ public class ControladorLibro {
 
                 LibroDAO libroDAO = new LibroDAO();
                 libroDAO.eliminarLibro(String.valueOf(libroSeleccionado.getIsbn()));
+
                 onClickMostrarLibros(event);
             }
         }
@@ -166,6 +206,7 @@ public class ControladorLibro {
 
                 ControladorModificarLibro controlador = loader.getController();
                 controlador.posicionarLibro(libroSeleccionado);
+                controlador.setOnLibroChangeListener(this::mostrarLibros);
 
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
@@ -201,6 +242,7 @@ public class ControladorLibro {
         tablaLibros.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection != null) {
                 Libro libroSeleccionado = newSelection;
+                labelTituloLibro.setText(libroSeleccionado.getTitulo());
                 byte[] portadaBytes = libroSeleccionado.getPortada();
                 if (portadaBytes != null) {
                     Image image = new Image(new ByteArrayInputStream(portadaBytes));
@@ -210,6 +252,21 @@ public class ControladorLibro {
                 }
             }
         });
+
+        mostrarLibros();
+    }
+
+    void mostrarLibros() {
+        LibroDAO libroDAO = new LibroDAO();
+        List<Libro> libros = libroDAO.obtenerLibros();
+
+        ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
+        tablaLibros.setItems(observableList);
+    }
+
+    @FXML
+    void onClickInicio(ActionEvent event) {
+        cargarVista("inicio-view.fxml");
     }
 }
 

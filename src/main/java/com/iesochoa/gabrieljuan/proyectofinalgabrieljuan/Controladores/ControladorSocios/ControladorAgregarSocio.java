@@ -5,6 +5,7 @@ import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Socio;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,8 +35,19 @@ public class ControladorAgregarSocio {
 
     private byte[] imagenSocio;
 
+    private Runnable onSocioChangeListener;
+
+    public void setOnSocioChangeListener(Runnable onLibroChangeListener) {
+        this.onSocioChangeListener = onLibroChangeListener;
+    }
+
     @FXML
     void onClickAgregar(ActionEvent event) {
+        if (!validarCampos()) {
+            mostrarAlerta();
+            return;
+        }
+
         Socio socio = new Socio();
         socio.setNombre(campoNombre.getText());
         socio.setDireccion(campoDireccion.getText());
@@ -48,12 +60,20 @@ public class ControladorAgregarSocio {
 
         Stage stage = (Stage) campoNombre.getScene().getWindow();
         stage.close();
+
+        if (onSocioChangeListener != null) {
+            onSocioChangeListener.run();
+        }
     }
 
     @FXML
     void onClickCancelar(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+
+        if (onSocioChangeListener != null) {
+            onSocioChangeListener.run();
+        }
     }
 
     @FXML
@@ -71,5 +91,31 @@ public class ControladorAgregarSocio {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean validarCampos() {
+        if (campoNombre.getText().isEmpty() || campoDireccion.getText().isEmpty() || campoTelefono.getText().isEmpty() || campoEmail.getText().isEmpty()) {
+            return false;
+        }
+
+        if (!campoTelefono.getText().matches("^\\d{9}$")) {
+            return false;
+        }
+
+        String regexEmail = "^[\\w-]+(\\.[\\w-]+)*@[\\w-]+(\\.[\\w-]+)*(\\.[a-zA-Z]{2,})$";
+        if (!campoEmail.getText().matches(regexEmail)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void mostrarAlerta() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Por favor, introduzca los campos correctamente.");
+
+        alert.showAndWait();
     }
 }

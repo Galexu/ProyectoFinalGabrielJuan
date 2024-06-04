@@ -6,12 +6,20 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.AnchorPane;
+
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class ControladorInicio {
     @FXML
     private AnchorPane mainPane;
+
+    @FXML
+    private Hyperlink guiaUsuarioLink;
 
     @FXML
     void onClickLightPrime(ActionEvent event) {
@@ -34,13 +42,19 @@ public class ControladorInicio {
     }
 
     @FXML
-    void onClickLibro(ActionEvent event) {loadView("libro-view.fxml");}
+    void onClickLibro(ActionEvent event) {
+        loadView("libro-view.fxml");
+    }
 
     @FXML
-    void onClickPrestamo(ActionEvent event) {loadView("prestamo-view.fxml");}
+    void onClickPrestamo(ActionEvent event) {
+        loadView("prestamo-view.fxml");
+    }
 
     @FXML
-    void onClickSocio(ActionEvent event) {loadView("socio-view.fxml");}
+    void onClickSocio(ActionEvent event) {
+        loadView("socio-view.fxml");
+    }
 
     private void loadView(String viewName) {
         try {
@@ -48,6 +62,15 @@ public class ControladorInicio {
             Node view = loader.load();
             mainPane.getChildren().setAll(view);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void abrirEnlace(ActionEvent event) {
+        try {
+            Desktop.getDesktop().browse(new URI("https://github.com/Galexu?tab=repositories"));
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }

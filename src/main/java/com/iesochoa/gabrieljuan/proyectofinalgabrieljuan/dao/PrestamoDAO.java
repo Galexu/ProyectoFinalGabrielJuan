@@ -23,6 +23,38 @@ public class PrestamoDAO {
         }
     }
 
+    public boolean existePrestamoParaLibro(int libroId) {
+        String query = "SELECT COUNT(*) FROM prestamos WHERE copia_id IN (SELECT copia_id FROM ejemplares WHERE libro_id = ?)";
+        try (PreparedStatement statement = ConexionDB.conectar().prepareStatement(query)) {
+            statement.setInt(1, libroId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean existePrestamoParaSocio(int socioId) {
+        String query = "SELECT COUNT(*) FROM prestamos WHERE socio_id = ?";
+        try (PreparedStatement statement = ConexionDB.conectar().prepareStatement(query)) {
+            statement.setInt(1, socioId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public List<Prestamo> obtenerPrestamos() {
         List<Prestamo> prestamos = new ArrayList<>();
         String sql = "SELECT prestamos.*, libros.titulo AS tituloLibro, socios.nombre AS nombreSocio " +

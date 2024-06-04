@@ -70,5 +70,9 @@
         <Label layoutX="150.0" layoutY="178.0" text="Id Socio:" />
         <ImageView fx:id="imagenSocioView" fitHeight="150.0" fitWidth="200.0" layoutX="221.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" />
         <ImageView fx:id="imagenLibroView" fitHeight="150.0" fitWidth="200.0" layoutX="464.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="labelLibro" layoutX="236.0" layoutY="78.0" prefHeight="17.0" prefWidth="143.0" />
+      <Label fx:id="labelSocio" layoutX="245.0" layoutY="152.0" prefHeight="17.0" prefWidth="91.0" />
+      <Label fx:id="labelSocioId" layoutX="209.0" layoutY="176.0" prefHeight="17.0" prefWidth="18.0" />
+      <Label fx:id="labelLibroId" layoutX="212.0" layoutY="100.0" prefHeight="17.0" prefWidth="24.0" />
     </children>
 </AnchorPane>

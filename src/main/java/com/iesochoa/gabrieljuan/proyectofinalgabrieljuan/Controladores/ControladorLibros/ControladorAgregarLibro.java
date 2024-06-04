@@ -7,6 +7,7 @@ import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Libro;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
@@ -45,8 +46,19 @@ public class ControladorAgregarLibro {
 
     private byte[] imagenLibro;
 
+    private Runnable onLibroChangeListener;
+
+    public void setOnLibroChangeListener(Runnable onLibroChangeListener) {
+        this.onLibroChangeListener = onLibroChangeListener;
+    }
+
     @FXML
     void onClickAgregar(ActionEvent event) {
+        if (!validarCampos()) {
+            mostrarAlerta();
+            return;
+        }
+
         Libro libro = new Libro();
         Ejemplar ejemplar = new Ejemplar();
         LibroDAO libroDAO = new LibroDAO();
@@ -67,12 +79,20 @@ public class ControladorAgregarLibro {
 
         Stage stage = (Stage) campoIsbn.getScene().getWindow();
         stage.close();
+
+        if (onLibroChangeListener != null) {
+            onLibroChangeListener.run();
+        }
     }
 
     @FXML
     void onClickCancelar(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+
+        if (onLibroChangeListener != null) {
+            onLibroChangeListener.run();
+        }
     }
 
     @FXML
@@ -99,5 +119,38 @@ public class ControladorAgregarLibro {
                 generoMenuButton.setText(menuItem.getText());
             });
         }
+    }
+
+    private boolean validarCampos() {
+        if (campoIsbn.getText().isEmpty() || campoTitulo.getText().isEmpty() || campoAutor.getText().isEmpty() || campoAnoPublicacion.getText().isEmpty() || campoEjemplares.getText().isEmpty()) {
+            return false;
+        }
+
+        try {
+            Integer.parseInt(campoAnoPublicacion.getText());
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        try {
+            Integer.parseInt(campoEjemplares.getText());
+        } catch (NumberFormatException e) {
+            return false;
+        }
+
+        if (generoMenuButton.getText().equals("Seleccionar Genero")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void mostrarAlerta() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Por favor, introduzca los campos correctamente.");
+
+        alert.showAndWait();
     }
 }

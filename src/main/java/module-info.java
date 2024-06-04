@@ -3,6 +3,7 @@ module com.iesochoa.gabrieljuan.proyectofinalgabrieljuan {
     requires javafx.fxml;
     requires java.sql;
     requires atlantafx.base;
+    requires java.desktop;
 
     opens com.iesochoa.gabrieljuan.proyectofinalgabrieljuan to javafx.fxml;
     exports com.iesochoa.gabrieljuan.proyectofinalgabrieljuan;
