@@ -57,9 +57,10 @@ public class LibroDAO {
         return libros;
     }
 
-    public List<Libro> buscarLibroCheck(String criterioBusqueda, boolean buscarPorIsbn, boolean buscarPorTitulo, boolean buscarPorAutor) {
+    public List<Libro> buscarLibroCheck(String criterioBusqueda, boolean buscarPorIsbn, boolean buscarPorTitulo, boolean buscarPorAutor, boolean buscarPorAno, boolean BuscarPorGenero) {
         List<Libro> libros = new ArrayList<>();
-        String sql = "SELECT * FROM libros WHERE ";
+        String sql = "SELECT l.*, e.disponibles FROM libros l LEFT JOIN ejemplares e ON l.libro_id = e.libro_id WHERE ";
+
         boolean first = true;
 
         if (buscarPorIsbn) {
@@ -80,6 +81,20 @@ public class LibroDAO {
                 sql += " OR ";
             }
             sql += "autor LIKE ?";
+        }
+
+        if (buscarPorAno) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "ano_publicacion LIKE ?";
+        }
+
+        if (BuscarPorGenero) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "genero LIKE ?";
         }
 
         try (Connection con = ConexionDB.conectar();
@@ -109,6 +124,7 @@ public class LibroDAO {
                 libro.setAnoPublicacion(rs.getInt("ano_publicacion"));
                 libro.setGenero(rs.getString("genero"));
                 libro.setPortada(rs.getBytes("portada"));
+                libro.setDisponibles(rs.getInt("disponibles"));
                 libros.add(libro);
             }
         } catch (SQLException e) {
