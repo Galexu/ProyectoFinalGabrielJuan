@@ -23,6 +23,91 @@ public class SocioDAO {
         }
     }
 
+    public List<Socio> buscarSocioCheck(String criterioBusqueda, boolean buscarPorId, boolean buscarPorNombre, boolean buscarPorDireccion, boolean buscarPorTelefono, boolean buscarPorEmail) {
+        List<Socio> socios = new ArrayList<>();
+        String sql = "SELECT * FROM socios WHERE ";
+
+        boolean first = true;
+
+        if (buscarPorId) {
+            sql += "socio_id LIKE ?";
+            first = false;
+        }
+
+        if (buscarPorNombre) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "nombre LIKE ?";
+            first = false;
+        }
+
+        if (buscarPorDireccion) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "direccion LIKE ?";
+            first = false;
+        }
+
+        if (buscarPorTelefono) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "telefono LIKE ?";
+            first = false;
+        }
+
+        if (buscarPorEmail) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "email LIKE ?";
+        }
+
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            String criterio = "%" + criterioBusqueda + "%";
+            int index = 1;
+
+            if (buscarPorId) {
+                statement.setString(index++, criterio);
+            }
+
+            if (buscarPorNombre) {
+                statement.setString(index++, criterio);
+            }
+
+            if (buscarPorDireccion) {
+                statement.setString(index++, criterio);
+            }
+
+            if (buscarPorTelefono) {
+                statement.setString(index++, criterio);
+            }
+
+            if (buscarPorEmail) {
+                statement.setString(index++, criterio);
+            }
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Socio socio = new Socio();
+                socio.setSocioId(rs.getInt("socio_id"));
+                socio.setNombre(rs.getString("nombre"));
+                socio.setDireccion(rs.getString("direccion"));
+                socio.setTelefono(rs.getString("telefono"));
+                socio.setEmail(rs.getString("email"));
+                socio.setSocioFoto(rs.getBytes("socio_foto"));
+                socios.add(socio);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return socios;
+    }
+
     public List<Socio> obtenerSocios() {
         List<Socio> socios = new ArrayList<>();
         String sql = "SELECT * FROM socios";

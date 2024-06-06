@@ -3,36 +3,42 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="mainPane" prefHeight="620.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorPrestamos.ControladorPrestamo">
+<AnchorPane fx:id="mainPane" prefHeight="750.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorPrestamos.ControladorPrestamo">
     <children>
-        <AnchorPane layoutY="524.0" prefHeight="96.0" prefWidth="1200.0" style="-fx-border-color: darkgray; -fx-border-width: 2 0 0 0;">
+        <AnchorPane layoutY="654.0" prefHeight="96.0" prefWidth="1300.0" style="-fx-border-color: darkgray; -fx-border-width: 2 0 0 0;">
             <children>
-                <Button fx:id="libroButton" layoutX="33.0" layoutY="27.0" mnemonicParsing="false" onAction="#onClickLibro" prefHeight="43.0" prefWidth="99.0" text="Libro" />
-                <Button fx:id="prestamoButton" layoutX="288.0" layoutY="27.0" mnemonicParsing="false" onAction="#onClickPrestamo" prefHeight="43.0" prefWidth="99.0" text="Prestamo" />
-                <Button fx:id="socioButton" layoutX="159.0" layoutY="27.0" mnemonicParsing="false" onAction="#onClickSocio" prefHeight="43.0" prefWidth="105.0" text="Socio" />
-                <MenuButton contentDisplay="TOP" layoutX="1024.0" layoutY="27.0" mnemonicParsing="false" popupSide="TOP" prefHeight="43.0" prefWidth="141.0" text="Cambiar Tema">
-                    <items>
-                        <MenuItem fx:id="darkPrime" mnemonicParsing="false" onAction="#onClickDarkPrime" text="Dark" />
-                        <MenuItem fx:id="lightPrime" mnemonicParsing="false" onAction="#onClickLightPrime" text="Light" />
-                        <MenuItem fx:id="nordDark" mnemonicParsing="false" onAction="#onClickNordDark" text="Grisaceo" />
-                        <MenuItem fx:id="dracula" mnemonicParsing="false" onAction="#onClickDracula" text="Dracula" />
-                    </items>
-                </MenuButton>
+            <Button fx:id="InicioButton" layoutX="1027.0" layoutY="28.0" mnemonicParsing="false" onAction="#onClickInicio" prefHeight="45.0" prefWidth="100.0" text="Inicio" />
+            <MenuButton contentDisplay="TOP" layoutX="1145.0" layoutY="27.0" mnemonicParsing="false" popupSide="TOP" prefHeight="45.0" prefWidth="140.0" text="Cambiar Tema">
+               <items>
+                  <MenuItem fx:id="darkPrime" mnemonicParsing="false" onAction="#onClickDarkPrime" text="Dark" />
+                  <MenuItem fx:id="lightPrime" mnemonicParsing="false" onAction="#onClickLightPrime" text="Light" />
+                  <MenuItem fx:id="nordDark" mnemonicParsing="false" onAction="#onClickNordDark" text="Grisaceo" />
+                  <MenuItem fx:id="dracula" mnemonicParsing="false" onAction="#onClickDracula" text="Dracula" />
+               </items>
+            </MenuButton>
+            <HBox alignment="CENTER" layoutY="15.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
+               <children>
+                  <Button fx:id="libroButton" mnemonicParsing="false" onAction="#onClickLibro" prefHeight="45.0" prefWidth="100.0" text="Libro" />
+                  <Button fx:id="socioButton" mnemonicParsing="false" onAction="#onClickSocio" prefHeight="45.0" prefWidth="100.0" text="Socio" />
+                  <Button fx:id="prestamoButton" mnemonicParsing="false" onAction="#onClickPrestamo" prefHeight="45.0" prefWidth="100.0" text="Prestamo" />
+               </children>
+            </HBox>
             </children>
         </AnchorPane>
         <Accordion layoutX="391.0" layoutY="109.0" />
-        <TableView fx:id="tablaPrestamos" layoutX="426.0" prefHeight="525.0" prefWidth="775.0" tableMenuButtonVisible="true">
+        <TableView fx:id="tablaPrestamos" layoutX="470.0" prefHeight="654.0" prefWidth="830.0" tableMenuButtonVisible="true">
             <columns>
                 <TableColumn fx:id="idPrestamoColumn" prefWidth="104.0" text="Id" />
                 <TableColumn fx:id="idCopiaColumn" prefWidth="104.0" text="idLibro" visible="false" />
@@ -51,23 +57,49 @@
                 <Cursor fx:constant="HAND" />
             </cursor>
         </TableView>
-        <ImageView fitHeight="110.0" fitWidth="144.0" layoutX="143.0" layoutY="-13.0" opacity="0.42" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../../../../imagenes/socioMain.png" />
-            </image>
-        </ImageView>
-        <Label layoutX="14.0" layoutY="14.0" prefHeight="55.0" prefWidth="129.0" text="Prestamos">
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="47.0" layoutY="14.0" prefHeight="55.0" prefWidth="343.0" text="Gestion Prestamos" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="38.0" />
             </font>
         </Label>
-        <Button fx:id="mostrarPrestamos" layoutX="282.0" layoutY="21.0" mnemonicParsing="false" onAction="#onClickMostrarPrestamos" prefHeight="43.0" prefWidth="120.0" text="Mostrar Prestamo" />
-        <Button fx:id="agregarPrestamo" layoutX="292.0" layoutY="466.0" mnemonicParsing="false" onAction="#onClickAgregarPrestamo" prefHeight="43.0" prefWidth="99.0" text="Agregar" />
-        <Button fx:id="borrarPrestamo" layoutX="162.0" layoutY="466.0" mnemonicParsing="false" onAction="#onClickBorrarPrestamo" prefHeight="43.0" prefWidth="99.0" text="Borrar" />
-        <Button fx:id="modificarPrestamo" layoutX="29.0" layoutY="466.0" mnemonicParsing="false" onAction="#onClickModificarPrestamo" prefHeight="43.0" prefWidth="99.0" text="Modificar" textAlignment="CENTER" wrapText="true" />
-        <TextField fx:id="campoBusqueda" layoutX="29.0" layoutY="415.0" />
-        <Button fx:id="botonBuscar" layoutX="198.0" layoutY="415.0" mnemonicParsing="false" onAction="#onClickBuscar" text="Button" />
-      <ImageView fx:id="imagenLibroView" fitHeight="150.0" fitWidth="200.0" layoutX="212.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="imagenSocioView" fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imagenLibroView" fitHeight="230.0" fitWidth="215.0" layoutX="247.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="imagenSocioView" fitHeight="230.0" fitWidth="215.0" layoutX="17.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true" />
+      <HBox alignment="CENTER" layoutY="575.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
+         <children>
+            <Button fx:id="modificarPrestamo" mnemonicParsing="false" onAction="#onClickModificarPrestamo" prefHeight="45.0" prefWidth="100.0" text="Modificar" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="borrarPrestamo" mnemonicParsing="false" onAction="#onClickBorrarPrestamo" prefHeight="45.0" prefWidth="100.0" text="Borrar" />
+            <Button fx:id="agregarPrestamo" mnemonicParsing="false" onAction="#onClickAgregarPrestamo" prefHeight="45.0" prefWidth="100.0" text="Agregar" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="31.0" layoutY="485.0" prefHeight="35.0" prefWidth="403.0" spacing="15.0">
+         <children>
+            <CheckBox fx:id="checkId" text="Id" />
+            <CheckBox fx:id="checkLibro" text="Libro" />
+            <CheckBox fx:id="checkSocio" contentDisplay="BOTTOM" text="Socio" />
+            <CheckBox fx:id="checkPrestamo" contentDisplay="BOTTOM" text="Prestamo" />
+            <CheckBox fx:id="checkDevuelto" contentDisplay="BOTTOM" text="Devuelto" />
+            <CheckBox fx:id="checkLimite" contentDisplay="BOTTOM" text="Limite" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="45.0" layoutY="520.0" prefHeight="55.0" prefWidth="346.0">
+         <children>
+            <TextField fx:id="campoBusqueda" alignment="CENTER" onKeyReleased="#onKeyReleasedBuscar" prefHeight="35.0" prefWidth="215.0" />
+            <Button fx:id="botonRefrescar" mnemonicParsing="false" onAction="#onClickRefrescar" prefHeight="35.0" prefWidth="38.0" text="⟳">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <Label fx:id="labelTituloLibro" alignment="CENTER" contentDisplay="CENTER" layoutX="289.0" layoutY="98.0" prefHeight="45.0" prefWidth="131.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labelNombreSocio" alignment="CENTER" contentDisplay="CENTER" layoutX="59.0" layoutY="98.0" prefHeight="45.0" prefWidth="131.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

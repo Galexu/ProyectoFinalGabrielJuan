@@ -2,6 +2,7 @@ package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.Controla
 
 import atlantafx.base.theme.*;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorAgregarLibro;
+import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.LibroDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.PrestamoDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.SocioDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Libro;
@@ -19,6 +20,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -30,6 +32,20 @@ import java.util.List;
 import java.util.Optional;
 
 public class ControladorSocio {
+    @FXML
+    private CheckBox checkDireccion;
+
+    @FXML
+    private CheckBox checkEmail;
+
+    @FXML
+    private CheckBox checkId;
+
+    @FXML
+    private CheckBox checkNombre;
+
+    @FXML
+    private CheckBox checkTelefono;
 
     @FXML
     private Label labelNombreSocio;
@@ -103,6 +119,39 @@ public class ControladorSocio {
     void onClickMostrarSocios(ActionEvent event) {
         SocioDAO socioDAO = new SocioDAO();
         List<Socio> socios = socioDAO.obtenerSocios();
+
+        ObservableList<Socio> observableList = FXCollections.observableArrayList(socios);
+        tablaSocios.setItems(observableList);
+    }
+
+    @FXML
+    void onClickRefrescar(ActionEvent event) {
+        mostrarSocios();
+        campoBusqueda.clear();
+        checkId.setSelected(false);
+        checkNombre.setSelected(false);
+        checkDireccion.setSelected(false);
+        checkTelefono.setSelected(false);
+        checkEmail.setSelected(false);
+    }
+
+    @FXML
+    void onKeyReleasedBuscar(KeyEvent event) {
+        String criterioBusqueda = campoBusqueda.getText();
+
+        boolean buscarPorId = checkId.isSelected();
+        boolean buscarPorNombre = checkNombre.isSelected();
+        boolean buscarPorDireccion = checkNombre.isSelected();
+        boolean buscarPorTelefono = checkTelefono.isSelected();
+        boolean buscarPorEmail = checkEmail.isSelected();
+
+        SocioDAO socioDAO = new SocioDAO();
+        List<Socio> socios = null;
+        if (buscarPorId || buscarPorNombre || buscarPorDireccion || buscarPorTelefono || buscarPorEmail) {
+            socios = socioDAO.buscarSocioCheck(criterioBusqueda, buscarPorId, buscarPorNombre, buscarPorDireccion, buscarPorTelefono, buscarPorEmail);
+        } else {
+            socios = socioDAO.buscarSocios(criterioBusqueda);
+        }
 
         ObservableList<Socio> observableList = FXCollections.observableArrayList(socios);
         tablaSocios.setItems(observableList);

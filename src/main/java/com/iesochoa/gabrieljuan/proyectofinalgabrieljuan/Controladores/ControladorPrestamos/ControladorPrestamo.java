@@ -5,6 +5,7 @@ import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.Controlad
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorModificarLibro;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorSocios.ControladorAgregarSocio;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.EjemplarDAO;
+import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.LibroDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.PrestamoDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.SocioDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Libro;
@@ -23,6 +24,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -75,6 +77,66 @@ public class ControladorPrestamo {
     private ImageView imagenSocioView;
 
     @FXML
+    private CheckBox checkDevuelto;
+
+    @FXML
+    private CheckBox checkId;
+
+    @FXML
+    private CheckBox checkLibro;
+
+    @FXML
+    private CheckBox checkLimite;
+
+    @FXML
+    private CheckBox checkPrestamo;
+
+    @FXML
+    private CheckBox checkSocio;
+
+    @FXML
+    private Label labelNombreSocio;
+
+    @FXML
+    private Label labelTituloLibro;
+
+
+    @FXML
+    void onKeyReleasedBuscar(KeyEvent event) {
+        String criterioBusqueda = campoBusqueda.getText();
+
+        boolean buscarPorId = checkId.isSelected();
+        boolean buscarPorLibro = checkLibro.isSelected();
+        boolean buscarPorSocio = checkSocio.isSelected();
+        boolean buscarPorPrestamo = checkPrestamo.isSelected();
+        boolean buscarPorDevuelto = checkDevuelto.isSelected();
+        boolean buscarPorLimite = checkLimite.isSelected();
+
+        PrestamoDAO prestamoDAO = new PrestamoDAO();
+        List<Prestamo> prestamos = null;
+        if (buscarPorId || buscarPorLibro || buscarPorSocio || buscarPorPrestamo || buscarPorLimite || buscarPorDevuelto) {
+            prestamos = prestamoDAO.buscarPrestamoCheck(criterioBusqueda, buscarPorId, buscarPorLibro, buscarPorSocio, buscarPorPrestamo, buscarPorLimite, buscarPorDevuelto);
+        } else {
+            prestamos = prestamoDAO.buscarPrestamos(criterioBusqueda);
+        }
+
+        ObservableList<Prestamo> observableList = FXCollections.observableArrayList(prestamos);
+        tablaPrestamos.setItems(observableList);
+    }
+
+    @FXML
+    void onClickRefrescar(ActionEvent event) {
+        mostrarPrestamos();
+        campoBusqueda.clear();
+        checkId.setSelected(false);
+        checkLibro.setSelected(false);
+        checkSocio.setSelected(false);
+        checkPrestamo.setSelected(false);
+        checkDevuelto.setSelected(false);
+        checkLimite.setSelected(false);
+    }
+
+    @FXML
     void onClickLightPrime(ActionEvent event) {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
     }
@@ -107,6 +169,11 @@ public class ControladorPrestamo {
     @FXML
     void onClickSocio(ActionEvent event) {
         cargarVista("socio-view.fxml");
+    }
+
+    @FXML
+    void onClickInicio(ActionEvent event) {
+        cargarVista("inicio-view.fxml");
     }
 
     private void cargarVista(String viewName) {
@@ -225,6 +292,8 @@ public class ControladorPrestamo {
                 Libro libroSeleccionado = ejemplarDAO.obtenerLibroPorCopiaId(prestamoSeleccionado.getCopiaId());
                 Socio socioSeleccionado = socioDAO.obtenerSocioPorId(prestamoSeleccionado.getSocioId());
 
+                labelNombreSocio.setText(socioSeleccionado.getNombre());
+                labelTituloLibro.setText(libroSeleccionado.getTitulo());
                 byte[] portadaBytes = libroSeleccionado.getPortada();
                 if (portadaBytes != null) {
                     Image image = new Image(new ByteArrayInputStream(portadaBytes));
@@ -242,7 +311,6 @@ public class ControladorPrestamo {
                 }
             }
         });
-
         mostrarPrestamos();
     }
 

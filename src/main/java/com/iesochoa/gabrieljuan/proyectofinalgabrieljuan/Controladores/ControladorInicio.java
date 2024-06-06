@@ -1,6 +1,8 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores;
 
 import atlantafx.base.theme.*;
+import atlantafx.base.util.Animations;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,11 +10,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class ControladorInicio {
     @FXML
@@ -20,6 +25,9 @@ public class ControladorInicio {
 
     @FXML
     private Hyperlink guiaUsuarioLink;
+
+    @FXML
+    private ImageView logoPortada;
 
     @FXML
     void onClickLightPrime(ActionEvent event) {
@@ -73,5 +81,14 @@ public class ControladorInicio {
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void initialize() {
+        Timeline a = Animations.fadeInDown(logoPortada, Duration.seconds(10));
+        Timeline b = Animations.pulse(logoPortada);
+
+        a.setOnFinished(event -> b.playFromStart());
+        a.playFromStart();
     }
 }

@@ -23,6 +23,116 @@ public class PrestamoDAO {
         }
     }
 
+    public List<Prestamo> buscarPrestamoCheck(String criterioBusqueda, boolean buscarPorId, boolean buscarPorCopiaId, boolean buscarPorSocioId, boolean buscarPorFechaPrestamo, boolean buscarPorFechaDevolucion, boolean buscarPorFechaLimite) {
+        List<Prestamo> prestamos = new ArrayList<>();
+        String sql = "SELECT * FROM prestamos WHERE ";
+
+        boolean first = true;
+
+        if (buscarPorId) {
+            sql += "prestamo_id LIKE ?";
+            first = false;
+        }
+
+        if (buscarPorCopiaId) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "copia_id LIKE ?";
+            first = false;
+        }
+
+        if (buscarPorSocioId) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "socio_id LIKE ?";
+            first = false;
+        }
+
+        if (buscarPorFechaPrestamo) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "fecha_prestamo LIKE ?";
+            first = false;
+        }
+
+        if (buscarPorFechaDevolucion) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "fecha_devolucion LIKE ?";
+            first = false;
+        }
+
+        if (buscarPorFechaLimite) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "fecha_limite LIKE ?";
+            first = false;
+        }
+
+//        if (buscarPorEstado) {
+//            if (!first) {
+//                sql += " OR ";
+//            }
+//            sql += "estado LIKE ?";
+//        }
+
+        try (Connection con = ConexionDB.conectar();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            String criterio = "%" + criterioBusqueda + "%";
+            int index = 1;
+
+            if (buscarPorId) {
+                statement.setString(index++, criterio);
+            }
+
+            if (buscarPorCopiaId) {
+                statement.setString(index++, criterio);
+            }
+
+            if (buscarPorSocioId) {
+                statement.setString(index++, criterio);
+            }
+
+            if (buscarPorFechaPrestamo) {
+                statement.setString(index++, criterio);
+            }
+
+            if (buscarPorFechaDevolucion) {
+                statement.setString(index++, criterio);
+            }
+
+            if (buscarPorFechaLimite) {
+                statement.setString(index++, criterio);
+            }
+
+//            if (buscarPorEstado) {
+//                statement.setString(index++, criterio);
+//            }
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                Prestamo prestamo = new Prestamo();
+                prestamo.setPrestamoId(rs.getInt("prestamo_id"));
+                prestamo.setCopiaId(rs.getInt("copia_id"));
+                prestamo.setSocioId(rs.getInt("socio_id"));
+                prestamo.setFechaPrestamo(rs.getDate("fecha_prestamo"));
+                prestamo.setFechaDevolucion(rs.getDate("fecha_devolucion"));
+                prestamo.setFechaLimite(rs.getDate("fecha_limite"));
+                prestamo.setEstado(rs.getString("estado"));
+                prestamos.add(prestamo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return prestamos;
+    }
+
     public boolean existePrestamoParaLibro(int libroId) {
         String query = "SELECT COUNT(*) FROM prestamos WHERE copia_id IN (SELECT copia_id FROM ejemplares WHERE libro_id = ?)";
         try (PreparedStatement statement = ConexionDB.conectar().prepareStatement(query)) {

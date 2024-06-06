@@ -37,7 +37,7 @@
             </Label>
             </children>
         </AnchorPane>
-      <ImageView fitHeight="410.0" fitWidth="640.0" layoutX="330.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="logoPortada" fitHeight="410.0" fitWidth="640.0" layoutX="327.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../imagenes/Logo.png" />
          </image>

@@ -3,48 +3,49 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Bloom?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="651.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorSocios.ControladorAgregarSocio">
+<AnchorPane prefHeight="750.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorSocios.ControladorAgregarSocio">
     <children>
-        <TextField fx:id="campoNombre" layoutX="19.0" layoutY="117.0" prefHeight="39.0" prefWidth="225.0" promptText="Nombre" />
-        <TextField fx:id="campoDireccion" layoutX="19.0" layoutY="194.0" prefHeight="39.0" prefWidth="225.0" promptText="Direccion" />
-        <TextField fx:id="campoTelefono" layoutX="18.0" layoutY="269.0" prefHeight="39.0" prefWidth="225.0" promptText="Telefono" />
-        <TextField fx:id="campoEmail" layoutX="19.0" layoutY="339.0" prefHeight="39.0" prefWidth="225.0" promptText="Email" />
-        <Button fx:id="agregarButton" layoutX="480.0" layoutY="585.0" onAction="#onClickAgregar" prefHeight="39.0" prefWidth="91.0" text="Agregar" />
-        <Button fx:id="cancelarButton" layoutX="580.0" layoutY="585.0" onAction="#onClickCancelar" prefHeight="39.0" prefWidth="91.0" text="Cancelar" />
-        <Label layoutX="18.0" layoutY="96.0" text="Nombre">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-            <effect>
-                <Bloom />
-            </effect>
-        </Label>
-        <Label layoutX="18.0" layoutY="318.0" text="Email">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-        </Label>
-        <Label layoutX="18.0" layoutY="248.0" text="Telefono">
-            <font>
-                <Font name="System Bold" size="15.0" />
-            </font>
-        </Label>
-        <Label layoutX="18.0" layoutY="172.0" text="Dirección">
-            <font>
-                <Font name="System Bold" size="16.0" />
-            </font>
-        </Label>
-        <Label layoutX="243.0" layoutY="22.0" text="Agregar Socio">
+        <Button fx:id="agregarButton" layoutX="515.0" layoutY="691.0" onAction="#onClickAgregar" prefHeight="39.0" prefWidth="91.0" text="Agregar" />
+        <Button fx:id="cancelarButton" layoutX="630.0" layoutY="691.0" onAction="#onClickCancelar" prefHeight="39.0" prefWidth="91.0" text="Cancelar" />
+        <Label layoutX="275.0" layoutY="14.0" text="Agregar Socio">
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>
         </Label>
-        <ImageView fx:id="imagenSocioView" fitHeight="327.0" fitWidth="305.0" layoutX="302.0" layoutY="145.0" pickOnBounds="true" preserveRatio="true" />
-        <Button fx:id="seleccionarSocioButton" layoutX="496.0" layoutY="537.0" onAction="#seleccionarImagen" text="Seleccionar imagen" />
+        <ImageView fx:id="imagenSocioView" fitHeight="340.0" fitWidth="300.0" layoutX="365.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true" />
+        <Button fx:id="seleccionarSocioButton" layoutX="571.0" layoutY="647.0" onAction="#seleccionarImagen" text="Seleccionar imagen" />
+      <VBox alignment="CENTER_LEFT" layoutX="18.0" layoutY="83.0" prefHeight="467.0" prefWidth="225.0" spacing="20.0">
+         <children>
+              <Label text="Nombre">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="campoNombre" prefHeight="39.0" prefWidth="225.0" promptText="Nombre" />
+              <Label text="Dirección">
+                  <font>
+                      <Font name="System Bold" size="16.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="campoDireccion" prefHeight="39.0" prefWidth="225.0" promptText="Direccion" />
+              <Label text="Telefono">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="campoTelefono" prefHeight="39.0" prefWidth="225.0" promptText="Telefono" />
+              <Label text="Email">
+                  <font>
+                      <Font name="System Bold" size="15.0" />
+                  </font>
+              </Label>
+              <TextField fx:id="campoEmail" prefHeight="39.0" prefWidth="225.0" promptText="Email" />
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
