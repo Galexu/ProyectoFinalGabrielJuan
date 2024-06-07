@@ -14,6 +14,7 @@ import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Socio;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
@@ -95,14 +97,25 @@ public class ControladorPrestamo {
     private CheckBox checkSocio;
 
     @FXML
+    private CheckBox checkEstado;
+
+    @FXML
     private Label labelNombreSocio;
 
     @FXML
     private Label labelTituloLibro;
 
+    @FXML
+    private StackPane stackPaneImagenSocio;
+
+    @FXML
+    private StackPane stackPaneImagenLibro;
+
 
     @FXML
     void onKeyReleasedBuscar(KeyEvent event) {
+        ProgressIndicator cargando = new ProgressIndicator();
+        tablaPrestamos.setPlaceholder(cargando);
         String criterioBusqueda = campoBusqueda.getText();
 
         boolean buscarPorId = checkId.isSelected();
@@ -111,17 +124,26 @@ public class ControladorPrestamo {
         boolean buscarPorPrestamo = checkPrestamo.isSelected();
         boolean buscarPorDevuelto = checkDevuelto.isSelected();
         boolean buscarPorLimite = checkLimite.isSelected();
+        boolean buscarPorEstado = checkEstado.isSelected();
 
-        PrestamoDAO prestamoDAO = new PrestamoDAO();
-        List<Prestamo> prestamos = null;
-        if (buscarPorId || buscarPorLibro || buscarPorSocio || buscarPorPrestamo || buscarPorLimite || buscarPorDevuelto) {
-            prestamos = prestamoDAO.buscarPrestamoCheck(criterioBusqueda, buscarPorId, buscarPorLibro, buscarPorSocio, buscarPorPrestamo, buscarPorLimite, buscarPorDevuelto);
-        } else {
-            prestamos = prestamoDAO.buscarPrestamos(criterioBusqueda);
-        }
+        Task<List<Prestamo>> task = new Task<List<Prestamo>>() {
+            @Override
+            protected List<Prestamo> call() throws Exception {
+                PrestamoDAO prestamoDAO = new PrestamoDAO();
+                if (buscarPorId || buscarPorLibro || buscarPorSocio || buscarPorPrestamo || buscarPorDevuelto || buscarPorLimite || buscarPorEstado) {
+                    return prestamoDAO.buscarPrestamoCheck(criterioBusqueda, buscarPorId, buscarPorLibro, buscarPorSocio, buscarPorPrestamo, buscarPorDevuelto, buscarPorLimite, buscarPorEstado);
+                } else {
+                    return prestamoDAO.buscarPrestamos(criterioBusqueda);
+                }
+            }
+        };
 
-        ObservableList<Prestamo> observableList = FXCollections.observableArrayList(prestamos);
-        tablaPrestamos.setItems(observableList);
+        task.setOnSucceeded(e -> {
+            ObservableList<Prestamo> observableList = FXCollections.observableArrayList(task.getValue());
+            tablaPrestamos.setItems(observableList);
+            tablaPrestamos.setPlaceholder(new Label("No se encontro nada en la busqueda."));
+        });
+        new Thread(task).start();
     }
 
     @FXML
@@ -134,6 +156,7 @@ public class ControladorPrestamo {
         checkPrestamo.setSelected(false);
         checkDevuelto.setSelected(false);
         checkLimite.setSelected(false);
+        checkEstado.setSelected(false);
     }
 
     @FXML
@@ -220,22 +243,11 @@ public class ControladorPrestamo {
             if (result.get() == ButtonType.OK) {
                 PrestamoDAO prestamoDAO = new PrestamoDAO();
                 prestamoDAO.eliminarPrestamo(prestamoSeleccionado.getPrestamoId());
-                onClickMostrarPrestamos(event);
+                mostrarPrestamos();
             }
         }
 
         mostrarPrestamos();
-    }
-
-    @FXML
-    void onClickBuscar(ActionEvent event) {
-        String criterioBusqueda = campoBusqueda.getText();
-
-        PrestamoDAO prestamoDAO = new PrestamoDAO();
-        List<Prestamo> prestamos = prestamoDAO.buscarPrestamos(criterioBusqueda);
-
-        ObservableList<Prestamo> observableList = FXCollections.observableArrayList(prestamos);
-        tablaPrestamos.setItems(observableList);
     }
 
     @FXML
@@ -261,16 +273,10 @@ public class ControladorPrestamo {
     }
 
     @FXML
-    void onClickMostrarPrestamos(ActionEvent event) {
-        PrestamoDAO prestamoDAO = new PrestamoDAO();
-        List<Prestamo> prestamos = prestamoDAO.obtenerPrestamos();
-
-        ObservableList<Prestamo> observableList = FXCollections.observableArrayList(prestamos);
-        tablaPrestamos.setItems(observableList);
-    }
-
-    @FXML
     void initialize() {
+        stackPaneImagenLibro.getStyleClass().add("border-default");
+        stackPaneImagenSocio.getStyleClass().add("border-default");
+
         Styles.toggleStyleClass(tablaPrestamos, Styles.BORDERED);
         Styles.toggleStyleClass(tablaPrestamos, Styles.STRIPED);
         idPrestamoColumn.setCellValueFactory(new PropertyValueFactory<>("prestamoId"));
@@ -315,13 +321,27 @@ public class ControladorPrestamo {
     }
 
 
-    void mostrarPrestamos() {
-        PrestamoDAO prestamoDAO = new PrestamoDAO();
-        List<Prestamo> prestamos = prestamoDAO.obtenerPrestamos();
+    private void mostrarPrestamos() {
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        tablaPrestamos.setPlaceholder(progressIndicator);
 
-        ObservableList<Prestamo> observableList = FXCollections.observableArrayList(prestamos);
-        tablaPrestamos.setItems(observableList);
+        Task<List<Prestamo>> task = new Task<List<Prestamo>>() {
+            @Override
+            protected List<Prestamo> call() throws Exception {
+                PrestamoDAO prestamoDAO = new PrestamoDAO();
+                return prestamoDAO.obtenerPrestamos();
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            List<Prestamo> prestamos = task.getValue();
+            ObservableList<Prestamo> observableList = FXCollections.observableArrayList(prestamos);
+            tablaPrestamos.setItems(observableList);
+            tablaPrestamos.setPlaceholder(new Label("No hay datos disponibles"));
+        });
+        new Thread(task).start();
     }
+
 
 }
 

@@ -8,6 +8,7 @@ import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Libro;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -85,7 +86,7 @@ public class ControladorLibro {
     private CheckBox checkGenero;
 
     @FXML
-    private StackPane stackPaneImagen;
+    private StackPane stackPaneImagenLibro;
 
 
     @FXML
@@ -130,6 +131,8 @@ public class ControladorLibro {
 
     @FXML
     void onKeyReleasedBuscar(KeyEvent event) {
+        ProgressIndicator cargando = new ProgressIndicator();
+        tablaLibros.setPlaceholder(cargando);
         String criterioBusqueda = campoBusqueda.getText();
 
         boolean buscarPorIsbn = checkIsbn.isSelected();
@@ -138,16 +141,24 @@ public class ControladorLibro {
         boolean buscarPorAno = checkAno.isSelected();
         boolean buscarPorGenero = checkGenero.isSelected();
 
-        LibroDAO libroDAO = new LibroDAO();
-        List<Libro> libros = null;
-        if (buscarPorIsbn || buscarPorTitulo || buscarPorAutor || buscarPorAno || buscarPorGenero) {
-            libros = libroDAO.buscarLibroCheck(criterioBusqueda, buscarPorIsbn, buscarPorTitulo, buscarPorAutor, buscarPorAno, buscarPorGenero);
-        } else {
-            libros = libroDAO.buscarLibro(criterioBusqueda);
-        }
+        Task<List<Libro>> task = new Task<List<Libro>>() {
+            @Override
+            protected List<Libro> call() throws Exception {
+                LibroDAO libroDAO = new LibroDAO();
+                if (buscarPorIsbn || buscarPorTitulo || buscarPorAutor || buscarPorAno || buscarPorGenero) {
+                    return libroDAO.buscarLibroCheck(criterioBusqueda, buscarPorIsbn, buscarPorTitulo, buscarPorAutor, buscarPorAno, buscarPorGenero);
+                } else {
+                    return libroDAO.buscarLibro(criterioBusqueda);
+                }
+            }
+        };
 
-        ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
-        tablaLibros.setItems(observableList);
+        task.setOnSucceeded(e -> {
+            ObservableList<Libro> observableList = FXCollections.observableArrayList(task.getValue());
+            tablaLibros.setItems(observableList);
+            tablaLibros.setPlaceholder(new Label("No se encontro nada en la busqueda."));
+        });
+        new Thread(task).start();
     }
 
     @FXML
@@ -252,16 +263,29 @@ public class ControladorLibro {
     }
 
     private void mostrarLibros() {
-        LibroDAO libroDAO = new LibroDAO();
-        List<Libro> libros = libroDAO.obtenerLibros();
+        ProgressIndicator cargando = new ProgressIndicator();
+        tablaLibros.setPlaceholder(cargando);
 
-        ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
-        tablaLibros.setItems(observableList);
+        Task<List<Libro>> task = new Task<List<Libro>>() {
+            @Override
+            protected List<Libro> call() throws Exception {
+                LibroDAO libroDAO = new LibroDAO();
+                return libroDAO.obtenerLibros();
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            List<Libro> libros = task.getValue();
+            ObservableList<Libro> observableList = FXCollections.observableArrayList(libros);
+            tablaLibros.setItems(observableList);
+            tablaLibros.setPlaceholder(new Label("No hay datos disponibles"));
+        });
+        new Thread(task).start();
     }
 
     @FXML
     void initialize() {
-        stackPaneImagen.getStyleClass().add("border-default");
+        stackPaneImagenLibro.getStyleClass().add("border-default");
 
         Styles.toggleStyleClass(tablaLibros, Styles.BORDERED);
         Styles.toggleStyleClass(tablaLibros, Styles.STRIPED);

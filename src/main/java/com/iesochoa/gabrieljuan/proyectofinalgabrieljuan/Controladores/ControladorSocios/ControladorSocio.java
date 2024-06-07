@@ -10,6 +10,7 @@ import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Socio;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
@@ -81,6 +83,10 @@ public class ControladorSocio {
     private ImageView imagenSocioView;
 
     @FXML
+    private StackPane stackPaneImagenSocio;
+
+
+    @FXML
     void onClickLightPrime(ActionEvent event) {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
     }
@@ -116,15 +122,6 @@ public class ControladorSocio {
     }
 
     @FXML
-    void onClickMostrarSocios(ActionEvent event) {
-        SocioDAO socioDAO = new SocioDAO();
-        List<Socio> socios = socioDAO.obtenerSocios();
-
-        ObservableList<Socio> observableList = FXCollections.observableArrayList(socios);
-        tablaSocios.setItems(observableList);
-    }
-
-    @FXML
     void onClickRefrescar(ActionEvent event) {
         mostrarSocios();
         campoBusqueda.clear();
@@ -137,26 +134,35 @@ public class ControladorSocio {
 
     @FXML
     void onKeyReleasedBuscar(KeyEvent event) {
+        ProgressIndicator cargando = new ProgressIndicator();
+        tablaSocios.setPlaceholder(cargando);
         String criterioBusqueda = campoBusqueda.getText();
 
         boolean buscarPorId = checkId.isSelected();
         boolean buscarPorNombre = checkNombre.isSelected();
-        boolean buscarPorDireccion = checkNombre.isSelected();
+        boolean buscarPorDireccion = checkDireccion.isSelected();
         boolean buscarPorTelefono = checkTelefono.isSelected();
         boolean buscarPorEmail = checkEmail.isSelected();
 
-        SocioDAO socioDAO = new SocioDAO();
-        List<Socio> socios = null;
-        if (buscarPorId || buscarPorNombre || buscarPorDireccion || buscarPorTelefono || buscarPorEmail) {
-            socios = socioDAO.buscarSocioCheck(criterioBusqueda, buscarPorId, buscarPorNombre, buscarPorDireccion, buscarPorTelefono, buscarPorEmail);
-        } else {
-            socios = socioDAO.buscarSocios(criterioBusqueda);
-        }
+        Task<List<Socio>> task = new Task<List<Socio>>() {
+            @Override
+            protected List<Socio> call() throws Exception {
+                SocioDAO socioDAO = new SocioDAO();
+                if (buscarPorId || buscarPorNombre || buscarPorDireccion) {
+                    return socioDAO.buscarSocioCheck(criterioBusqueda, buscarPorId, buscarPorNombre, buscarPorDireccion, buscarPorTelefono, buscarPorEmail);
+                } else {
+                    return socioDAO.buscarSocios(criterioBusqueda);
+                }
+            }
+        };
 
-        ObservableList<Socio> observableList = FXCollections.observableArrayList(socios);
-        tablaSocios.setItems(observableList);
+        task.setOnSucceeded(e -> {
+            ObservableList<Socio> observableList = FXCollections.observableArrayList(task.getValue());
+            tablaSocios.setItems(observableList);
+            tablaSocios.setPlaceholder(new Label("No se encontro nada en la busqueda."));
+        });
+        new Thread(task).start();
     }
-
     @FXML
     void onClickAgregarSocio(ActionEvent event) {
         try {
@@ -208,7 +214,7 @@ public class ControladorSocio {
             if (result.get() == ButtonType.OK) {
                 SocioDAO socioDAO = new SocioDAO();
                 socioDAO.eliminarSocio(String.valueOf(socioSeleccionado.getSocioId()));
-                onClickMostrarSocios(event);
+                mostrarSocios();
             }
         }
     }
@@ -235,17 +241,6 @@ public class ControladorSocio {
         }
     }
 
-    @FXML
-    void onClickBuscar(ActionEvent event) {
-        String criterioBusqueda = campoBusqueda.getText();
-
-        SocioDAO socioDAO = new SocioDAO();
-        List<Socio> socios = socioDAO.buscarSocios(criterioBusqueda);
-
-        ObservableList<Socio> observableList = FXCollections.observableArrayList(socios);
-        tablaSocios.setItems(observableList);
-    }
-
     private void cargarVista(String viewName) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iesochoa/gabrieljuan/proyectofinalgabrieljuan/" + viewName));
@@ -258,6 +253,8 @@ public class ControladorSocio {
 
     @FXML
     void initialize() {
+        stackPaneImagenSocio.getStyleClass().add("border-default");
+
         Styles.toggleStyleClass(tablaSocios, Styles.BORDERED);
         Styles.toggleStyleClass(tablaSocios, Styles.STRIPED);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("socioId"));
@@ -283,12 +280,25 @@ public class ControladorSocio {
         mostrarSocios();
     }
 
-    void mostrarSocios() {
-        SocioDAO socioDAO = new SocioDAO();
-        List<Socio> socios = socioDAO.obtenerSocios();
+    private void mostrarSocios() {
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        tablaSocios.setPlaceholder(progressIndicator);
 
-        ObservableList<Socio> observableList = FXCollections.observableArrayList(socios);
-        tablaSocios.setItems(observableList);
+        Task<List<Socio>> task = new Task<List<Socio>>() {
+            @Override
+            protected List<Socio> call() throws Exception {
+                SocioDAO socioDAO = new SocioDAO();
+                return socioDAO.obtenerSocios();
+            }
+        };
+
+        task.setOnSucceeded(e -> {
+            List<Socio> socios = task.getValue();
+            ObservableList<Socio> observableList = FXCollections.observableArrayList(socios);
+            tablaSocios.setItems(observableList);
+            tablaSocios.setPlaceholder(new Label("No hay datos disponibles"));
+        });
+        new Thread(task).start();
     }
 
     @FXML

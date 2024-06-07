@@ -13,6 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainPane" prefHeight="750.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorSocios.ControladorSocio">
@@ -53,7 +54,6 @@
                 <Cursor fx:constant="HAND" />
             </cursor>
         </TableView>
-        <ImageView fx:id="imagenSocioView" fitHeight="340.0" fitWidth="300.0" layoutX="68.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" />
       <HBox alignment="CENTER" layoutY="575.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
          <children>
             <Button fx:id="modificarSocio" mnemonicParsing="false" onAction="#onClickModificarSocio" prefHeight="45.0" prefWidth="100.0" text="Modificar" textAlignment="CENTER" wrapText="true" />
@@ -90,5 +90,10 @@
             <CheckBox fx:id="checkEmail" contentDisplay="BOTTOM" text="Email" />
          </children>
       </HBox>
+      <StackPane fx:id="stackPaneImagenSocio" layoutX="58.0" layoutY="109.0" prefHeight="360.0" prefWidth="320.0">
+         <children>
+            <ImageView fx:id="imagenSocioView" fitHeight="340.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
     </children>
 </AnchorPane>

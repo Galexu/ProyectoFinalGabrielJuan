@@ -91,7 +91,7 @@
             <CheckBox fx:id="checkGenero" contentDisplay="BOTTOM" text="Genero" />
          </children>
       </HBox>
-        <StackPane fx:id="stackPaneImagen" layoutX="58.0" layoutY="109.0" prefHeight="360.0" prefWidth="320.0">
+        <StackPane fx:id="stackPaneImagenLibro" layoutX="58.0" layoutY="109.0" prefHeight="360.0" prefWidth="320.0">
             <ImageView fx:id="imagenLibroView" fitHeight="340.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
         </StackPane>
     </children>

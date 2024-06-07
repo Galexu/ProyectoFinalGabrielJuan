@@ -1,6 +1,7 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO;
 
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Prestamo;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +24,17 @@ public class PrestamoDAO {
         }
     }
 
-    public List<Prestamo> buscarPrestamoCheck(String criterioBusqueda, boolean buscarPorId, boolean buscarPorCopiaId, boolean buscarPorSocioId, boolean buscarPorFechaPrestamo, boolean buscarPorFechaDevolucion, boolean buscarPorFechaLimite) {
+    public List<Prestamo> buscarPrestamoCheck(String criterioBusqueda, boolean buscarPorId, boolean buscarPorCopiaId, boolean buscarPorSocioId, boolean buscarPorFechaPrestamo, boolean buscarPorFechaDevolucion, boolean buscarPorFechaLimite, boolean buscarPorEstado) {
         List<Prestamo> prestamos = new ArrayList<>();
-        String sql = "SELECT * FROM prestamos WHERE ";
+        String sql = "SELECT p.*, l.titulo, s.nombre FROM prestamos p " +
+                "JOIN ejemplares e ON p.copia_id = e.copia_id " +
+                "JOIN libros l ON e.libro_id = l.libro_id " +
+                "JOIN socios s ON p.socio_id = s.socio_id WHERE ";
 
         boolean first = true;
 
         if (buscarPorId) {
-            sql += "prestamo_id LIKE ?";
+            sql += "p.prestamo_id LIKE ?";
             first = false;
         }
 
@@ -38,48 +42,43 @@ public class PrestamoDAO {
             if (!first) {
                 sql += " OR ";
             }
-            sql += "copia_id LIKE ?";
-            first = false;
+            sql += "p.copia_id LIKE ?";
         }
 
         if (buscarPorSocioId) {
             if (!first) {
                 sql += " OR ";
             }
-            sql += "socio_id LIKE ?";
-            first = false;
+            sql += "p.socio_id LIKE ?";
         }
 
         if (buscarPorFechaPrestamo) {
             if (!first) {
                 sql += " OR ";
             }
-            sql += "fecha_prestamo LIKE ?";
-            first = false;
+            sql += "p.fecha_prestamo LIKE ?";
         }
 
         if (buscarPorFechaDevolucion) {
             if (!first) {
                 sql += " OR ";
             }
-            sql += "fecha_devolucion LIKE ?";
-            first = false;
+            sql += "p.fecha_devolucion LIKE ?";
         }
 
         if (buscarPorFechaLimite) {
             if (!first) {
                 sql += " OR ";
             }
-            sql += "fecha_limite LIKE ?";
-            first = false;
+            sql += "p.fecha_limite LIKE ?";
         }
 
-//        if (buscarPorEstado) {
-//            if (!first) {
-//                sql += " OR ";
-//            }
-//            sql += "estado LIKE ?";
-//        }
+        if (buscarPorEstado) {
+            if (!first) {
+                sql += " OR ";
+            }
+            sql += "p.estado LIKE ?";
+        }
 
         try (Connection con = ConexionDB.conectar();
              PreparedStatement statement = con.prepareStatement(sql)) {
@@ -110,9 +109,9 @@ public class PrestamoDAO {
                 statement.setString(index++, criterio);
             }
 
-//            if (buscarPorEstado) {
-//                statement.setString(index++, criterio);
-//            }
+            if (buscarPorEstado) {
+                statement.setString(index++, criterio);
+            }
 
             ResultSet rs = statement.executeQuery();
 
@@ -125,6 +124,8 @@ public class PrestamoDAO {
                 prestamo.setFechaDevolucion(rs.getDate("fecha_devolucion"));
                 prestamo.setFechaLimite(rs.getDate("fecha_limite"));
                 prestamo.setEstado(rs.getString("estado"));
+                prestamo.setTituloLibro(rs.getString("titulo"));
+                prestamo.setNombreSocio(rs.getString("nombre"));
                 prestamos.add(prestamo);
             }
         } catch (SQLException e) {

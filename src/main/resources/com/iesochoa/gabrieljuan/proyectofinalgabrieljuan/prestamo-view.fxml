@@ -13,6 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainPane" prefHeight="750.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorPrestamos.ControladorPrestamo">
@@ -57,28 +58,16 @@
                 <Cursor fx:constant="HAND" />
             </cursor>
         </TableView>
-        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="47.0" layoutY="14.0" prefHeight="55.0" prefWidth="343.0" text="Gestion Prestamos" textAlignment="CENTER">
+        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="14.0" prefHeight="55.0" prefWidth="343.0" text="Gestion Prestamos" textAlignment="CENTER">
             <font>
                 <Font name="System Bold" size="38.0" />
             </font>
         </Label>
-      <ImageView fx:id="imagenLibroView" fitHeight="230.0" fitWidth="215.0" layoutX="247.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="imagenSocioView" fitHeight="230.0" fitWidth="215.0" layoutX="17.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true" />
       <HBox alignment="CENTER" layoutY="575.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
          <children>
             <Button fx:id="modificarPrestamo" mnemonicParsing="false" onAction="#onClickModificarPrestamo" prefHeight="45.0" prefWidth="100.0" text="Modificar" textAlignment="CENTER" wrapText="true" />
             <Button fx:id="borrarPrestamo" mnemonicParsing="false" onAction="#onClickBorrarPrestamo" prefHeight="45.0" prefWidth="100.0" text="Borrar" />
             <Button fx:id="agregarPrestamo" mnemonicParsing="false" onAction="#onClickAgregarPrestamo" prefHeight="45.0" prefWidth="100.0" text="Agregar" />
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" layoutX="31.0" layoutY="485.0" prefHeight="35.0" prefWidth="403.0" spacing="15.0">
-         <children>
-            <CheckBox fx:id="checkId" text="Id" />
-            <CheckBox fx:id="checkLibro" text="Libro" />
-            <CheckBox fx:id="checkSocio" contentDisplay="BOTTOM" text="Socio" />
-            <CheckBox fx:id="checkPrestamo" contentDisplay="BOTTOM" text="Prestamo" />
-            <CheckBox fx:id="checkDevuelto" contentDisplay="BOTTOM" text="Devuelto" />
-            <CheckBox fx:id="checkLimite" contentDisplay="BOTTOM" text="Limite" />
          </children>
       </HBox>
       <HBox alignment="CENTER" layoutX="45.0" layoutY="520.0" prefHeight="55.0" prefWidth="346.0">
@@ -101,5 +90,30 @@
             <Font size="18.0" />
          </font>
       </Label>
+      <HBox alignment="CENTER" layoutX="28.0" layoutY="472.0" prefHeight="35.0" prefWidth="406.0" spacing="25.0">
+         <children>
+            <CheckBox fx:id="checkId" text="Id" />
+            <CheckBox fx:id="checkLibro" text="Libro" />
+            <CheckBox fx:id="checkSocio" contentDisplay="BOTTOM" text="Socio" />
+            <CheckBox fx:id="checkPrestamo" contentDisplay="BOTTOM" text="Prestamo" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" layoutX="87.0" layoutY="496.0" prefHeight="35.0" prefWidth="288.0" spacing="20.0">
+         <children>
+            <CheckBox fx:id="checkDevuelto" contentDisplay="BOTTOM" text="Devuelto" />
+            <CheckBox fx:id="checkLimite" contentDisplay="BOTTOM" text="Limite" />
+            <CheckBox fx:id="checkEstado" contentDisplay="BOTTOM" text="Estado" />
+         </children>
+      </HBox>
+      <StackPane fx:id="stackPaneImagenLibro" layoutX="250.0" layoutY="173.0" prefHeight="270.0" prefWidth="210.0">
+         <children>
+            <ImageView fx:id="imagenLibroView" fitHeight="260.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
+      <StackPane fx:id="stackPaneImagenSocio" layoutX="14.0" layoutY="173.0" prefHeight="270.0" prefWidth="210.0">
+         <children>
+            <ImageView fx:id="imagenSocioView" fitHeight="260.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
     </children>
 </AnchorPane>
