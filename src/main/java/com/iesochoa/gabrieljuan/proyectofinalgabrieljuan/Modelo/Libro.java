@@ -1,5 +1,9 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo;
 
+import com.google.gson.annotations.SerializedName;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Libro {
     private int libroId;
     private String isbn;
@@ -7,7 +11,10 @@ public class Libro {
     private String autor;
     private int anoPublicacion;
     private String genero;
-    private byte[] portada;
+
+    @SerializedName("portada")
+    private transient byte[] portada;
+
     private int disponibles;
 
     public Libro(int libroId, String isbn, String titulo, String autor, int anoPublicacion, String genero, byte[] portada) {

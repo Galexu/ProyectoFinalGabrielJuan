@@ -1,10 +1,15 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros;
 
 import atlantafx.base.theme.*;
+import au.com.bytecode.opencsv.CSVWriter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.EjemplarDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.LibroDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.PrestamoDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo.Libro;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,15 +30,13 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 public class ControladorLibro {
-    @FXML
-    private Button modificarLibro;
-
     @FXML
     private AnchorPane mainPane;
 
@@ -87,7 +90,6 @@ public class ControladorLibro {
 
     @FXML
     private StackPane stackPaneImagenLibro;
-
 
     @FXML
     void onClickLightPrime(ActionEvent event) {
@@ -252,6 +254,58 @@ public class ControladorLibro {
         }
     }
 
+    @FXML
+    void onClickCSV(ActionEvent event) {
+        LibroDAO libroDAO = new LibroDAO();
+        List<Libro> libros = libroDAO.obtenerLibros();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String fecha = LocalDateTime.now().format(formatter);
+        String pathingArchivo = "src/main/resources/exportaciones/datos_libros_csv_" + fecha + ".csv";
+        exportarCSV(libros, pathingArchivo);
+    }
+
+    @FXML
+    void onClickJson(ActionEvent event) {
+        LibroDAO libroDAO = new LibroDAO();
+        List<Libro> libros = libroDAO.obtenerLibros();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String fecha = LocalDateTime.now().format(formatter);
+        String pathingArchivo = "src/main/resources/exportaciones/datos_libros_json_" + fecha + ".json";
+        exportarJson(libros, pathingArchivo);
+    }
+
+    @FXML
+    void initialize() {
+        stackPaneImagenLibro.getStyleClass().add("border-default");
+
+        Styles.toggleStyleClass(tablaLibros, Styles.BORDERED);
+        Styles.toggleStyleClass(tablaLibros, Styles.STRIPED);
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("libroId"));
+        isbnColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        tituloColumn.setCellValueFactory(new PropertyValueFactory<>("titulo"));
+        autorColumn.setCellValueFactory(new PropertyValueFactory<>("autor"));
+        anoPublicacionColumn.setCellValueFactory(new PropertyValueFactory<>("anoPublicacion"));
+        generoColumn.setCellValueFactory(new PropertyValueFactory<>("genero"));
+        ejemplaresColumn.setCellValueFactory(new PropertyValueFactory<>("disponibles"));
+
+        tablaLibros.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                Libro libroSeleccionado = newSelection;
+                labelTituloLibro.setText(libroSeleccionado.getTitulo());
+                byte[] portadaBytes = libroSeleccionado.getPortada();
+                if (portadaBytes != null) {
+                    Image image = new Image(new ByteArrayInputStream(portadaBytes));
+                    imagenLibroView.setImage(image);
+                } else {
+                    imagenLibroView.setImage(null);
+                }
+            }
+        });
+        mostrarLibros();
+    }
+
     private void cargarVista(String viewName) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/iesochoa/gabrieljuan/proyectofinalgabrieljuan/" + viewName));
@@ -283,34 +337,29 @@ public class ControladorLibro {
         new Thread(task).start();
     }
 
-    @FXML
-    void initialize() {
-        stackPaneImagenLibro.getStyleClass().add("border-default");
+    public void exportarJson(List<Libro> libros, String pathingArchivo) {
+        try (Writer writer = new FileWriter(pathingArchivo)) {
+            Gson gson = new GsonBuilder()
+                    .excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT)
+                    .create();
+            gson.toJson(libros, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        Styles.toggleStyleClass(tablaLibros, Styles.BORDERED);
-        Styles.toggleStyleClass(tablaLibros, Styles.STRIPED);
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("libroId"));
-        isbnColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        tituloColumn.setCellValueFactory(new PropertyValueFactory<>("titulo"));
-        autorColumn.setCellValueFactory(new PropertyValueFactory<>("autor"));
-        anoPublicacionColumn.setCellValueFactory(new PropertyValueFactory<>("anoPublicacion"));
-        generoColumn.setCellValueFactory(new PropertyValueFactory<>("genero"));
-        ejemplaresColumn.setCellValueFactory(new PropertyValueFactory<>("disponibles"));
+    public void exportarCSV(List<Libro> libros, String pathingArchivo) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(pathingArchivo))) {
+            String[] cabecera = { "LibroId", "Isbn", "Titulo", "Autor", "AnoPublicacion", "Genero", "Disponibles" };
+            writer.writeNext(cabecera);
 
-        tablaLibros.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                Libro libroSeleccionado = newSelection;
-                labelTituloLibro.setText(libroSeleccionado.getTitulo());
-                byte[] portadaBytes = libroSeleccionado.getPortada();
-                if (portadaBytes != null) {
-                    Image image = new Image(new ByteArrayInputStream(portadaBytes));
-                    imagenLibroView.setImage(image);
-                } else {
-                    imagenLibroView.setImage(null);
-                }
+            for (Libro libro : libros) {
+                String[] datos = { String.valueOf(libro.getLibroId()), libro.getIsbn(), libro.getTitulo(), libro.getAutor(), String.valueOf(libro.getAnoPublicacion()), libro.getGenero(), String.valueOf(libro.getDisponibles()) };
+                writer.writeNext(datos);
             }
-        });
-        mostrarLibros();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
