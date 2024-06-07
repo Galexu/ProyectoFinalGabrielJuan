@@ -22,6 +22,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -82,6 +83,10 @@ public class ControladorLibro {
 
     @FXML
     private CheckBox checkGenero;
+
+    @FXML
+    private StackPane stackPaneImagen;
+
 
     @FXML
     void onClickLightPrime(ActionEvent event) {
@@ -256,6 +261,8 @@ public class ControladorLibro {
 
     @FXML
     void initialize() {
+        stackPaneImagen.getStyleClass().add("border-default");
+
         Styles.toggleStyleClass(tablaLibros, Styles.BORDERED);
         Styles.toggleStyleClass(tablaLibros, Styles.STRIPED);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("libroId"));

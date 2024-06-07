@@ -13,6 +13,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="mainPane" prefHeight="750.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorLibro">
@@ -60,7 +61,6 @@
                 <Font name="System Bold" size="38.0" />
             </font>
         </Label>
-        <ImageView fx:id="imagenLibroView" fitHeight="340.0" fitWidth="300.0" layoutX="68.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true" />
       <HBox alignment="CENTER" layoutY="575.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
          <children>
               <Button fx:id="modificarLibro" mnemonicParsing="false" onAction="#onClickModificarLibro" prefHeight="45.0" prefWidth="100.0" text="Modificar" textAlignment="CENTER" wrapText="true" />
@@ -91,5 +91,8 @@
             <CheckBox fx:id="checkGenero" contentDisplay="BOTTOM" text="Genero" />
          </children>
       </HBox>
+        <StackPane fx:id="stackPaneImagen" layoutX="58.0" layoutY="109.0" prefHeight="360.0" prefWidth="320.0">
+            <ImageView fx:id="imagenLibroView" fitHeight="340.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+        </StackPane>
     </children>
 </AnchorPane>
