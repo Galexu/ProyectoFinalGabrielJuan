@@ -1,6 +1,9 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorSocios;
 
 import atlantafx.base.theme.*;
+import au.com.bytecode.opencsv.CSVWriter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorAgregarLibro;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.LibroDAO;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.DAO.PrestamoDAO;
@@ -29,7 +32,11 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -304,6 +311,73 @@ public class ControladorSocio {
     @FXML
     void onClickInicio(ActionEvent event) {
         cargarVista("inicio-view.fxml");
+    }
+
+    public void exportarJson(List<Socio> socios, String pathingArchivo) {
+        try (Writer writer = new FileWriter(pathingArchivo)) {
+            Gson gson = new GsonBuilder()
+                    .excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT)
+                    .create();
+            gson.toJson(socios, writer);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exportación");
+            alert.setHeaderText(null);
+            alert.setContentText("La exportación a JSON ha sido completada exitosamente.");
+
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/favicon.png")));
+
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportarCSV(List<Socio> socios, String pathingArchivo) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(pathingArchivo))) {
+            String[] cabecera = { "ID", "Nombre", "Direccion", "Telefono", "Email"};
+            writer.writeNext(cabecera);
+
+            for (Socio socio : socios) {
+                String[] datos = { String.valueOf(socio.getSocioId()), socio.getNombre(), socio.getDireccion(), socio.getTelefono(), socio.getEmail()};
+                writer.writeNext(datos);
+            }
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exportación");
+            alert.setHeaderText(null);
+            alert.setContentText("La exportación a CSV ha sido completada exitosamente.");
+
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/favicon.png")));
+
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void onClickCSV(ActionEvent event) {
+        SocioDAO socioDAO = new SocioDAO();
+        List<Socio> socios = socioDAO.obtenerSocios();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String fecha = LocalDateTime.now().format(formatter);
+        String pathingArchivo = "src/main/resources/exportaciones/datos_socios_csv_" + fecha + ".csv";
+        exportarCSV(socios, pathingArchivo);
+    }
+
+    @FXML
+    void onClickJson(ActionEvent event) {
+        SocioDAO socioDAO = new SocioDAO();
+        List<Socio> socios = socioDAO.obtenerSocios();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String fecha = LocalDateTime.now().format(formatter);
+        String pathingArchivo = "src/main/resources/exportaciones/datos_socios_json_" + fecha + ".json";
+        exportarJson(socios, pathingArchivo);
     }
 }
 

@@ -13,6 +13,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -52,6 +53,9 @@ public class ControladorModificarLibro {
     private EjemplarDAO ejemplarDAO = new EjemplarDAO();
 
     private Runnable onLibroChangeListener;
+
+    @FXML
+    private StackPane stackPaneImagenLibro;
 
     public void setOnLibroChangeListener(Runnable onLibroChangeListener) {
         this.onLibroChangeListener = onLibroChangeListener;
@@ -147,6 +151,8 @@ public class ControladorModificarLibro {
 
     @FXML
     void initialize() {
+        stackPaneImagenLibro.getStyleClass().add("border-default");
+
         for (MenuItem menuItem : generoMenuButton.getItems()) {
             menuItem.setOnAction(event -> {
                 generoMenuButton.setText(menuItem.getText());

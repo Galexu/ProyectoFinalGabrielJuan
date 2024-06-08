@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -17,7 +18,6 @@
                 <Font name="System Bold" size="30.0" />
             </font>
         </Label>
-        <ImageView fx:id="imagenSocioView" fitHeight="340.0" fitWidth="300.0" layoutX="365.0" layoutY="178.0" pickOnBounds="true" preserveRatio="true" />
         <Button fx:id="seleccionarSocioButton" layoutX="571.0" layoutY="647.0" onAction="#seleccionarImagen" text="Seleccionar imagen" />
       <VBox alignment="CENTER_LEFT" layoutX="18.0" layoutY="83.0" prefHeight="467.0" prefWidth="225.0" spacing="20.0">
          <children>
@@ -47,5 +47,10 @@
               <TextField fx:id="campoEmail" prefHeight="39.0" prefWidth="225.0" promptText="Email" />
          </children>
       </VBox>
+      <StackPane fx:id="stackPaneImagenSocio" layoutX="355.0" layoutY="195.0" prefHeight="360.0" prefWidth="320.0">
+         <children>
+            <ImageView fx:id="imagenSocioView" fitHeight="340.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </StackPane>
     </children>
 </AnchorPane>

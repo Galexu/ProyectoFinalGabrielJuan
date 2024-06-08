@@ -1,6 +1,9 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorPrestamos;
 
 import atlantafx.base.theme.*;
+import au.com.bytecode.opencsv.CSVWriter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorAgregarLibro;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorLibros.ControladorModificarLibro;
 import com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Controladores.ControladorSocios.ControladorAgregarSocio;
@@ -31,7 +34,11 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -110,7 +117,6 @@ public class ControladorPrestamo {
 
     @FXML
     private StackPane stackPaneImagenLibro;
-
 
     @FXML
     void onKeyReleasedBuscar(KeyEvent event) {
@@ -342,6 +348,71 @@ public class ControladorPrestamo {
         new Thread(task).start();
     }
 
+    public void exportarJson(List<Prestamo> prestamos, String pathingArchivo) {
+        try (Writer writer = new FileWriter(pathingArchivo)) {
+            Gson gson = new GsonBuilder()
+                    .excludeFieldsWithModifiers(java.lang.reflect.Modifier.TRANSIENT)
+                    .create();
+            gson.toJson(prestamos, writer);
 
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exportación");
+            alert.setHeaderText(null);
+            alert.setContentText("La exportación a JSON ha sido completada exitosamente.");
+
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/favicon.png")));
+
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportarCSV(List<Prestamo> prestamos, String pathingArchivo) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(pathingArchivo))) {
+            String[] cabecera = {"ID Prestamo", "Nombre Socio", "Titulo Libro", "ID Copia", "ID Socio", "Fecha Prestamo", "Fecha Devolucion", "Fecha Limite", "Estado"};
+            writer.writeNext(cabecera);
+
+            for (Prestamo prestamo : prestamos) {
+                String[] datos = {String.valueOf(prestamo.getPrestamoId()), prestamo.getNombreSocio(), prestamo.getTituloLibro(), String.valueOf(prestamo.getCopiaId()), String.valueOf(prestamo.getSocioId()), String.valueOf(prestamo.getFechaPrestamo()), String.valueOf(prestamo.getFechaDevolucion()), String.valueOf(prestamo.getFechaLimite()), prestamo.getEstado()};
+                writer.writeNext(datos);
+            }
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Exportación");
+            alert.setHeaderText(null);
+            alert.setContentText("La exportación a CSV ha sido completada exitosamente.");
+
+            Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+            alertStage.getIcons().add(new Image(getClass().getResourceAsStream("/imagenes/favicon.png")));
+
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void onClickCSV(ActionEvent event) {
+        PrestamoDAO prestamoDAO = new PrestamoDAO();
+        List<Prestamo> prestamos = prestamoDAO.obtenerPrestamos();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String fecha = LocalDateTime.now().format(formatter);
+        String pathingArchivo = "src/main/resources/exportaciones/datos_prestamos_csv_" + fecha + ".csv";
+        exportarCSV(prestamos, pathingArchivo);
+    }
+
+    @FXML
+    void onClickJson(ActionEvent event) {
+        PrestamoDAO prestamoDAO = new PrestamoDAO();
+        List<Prestamo> prestamos = prestamoDAO.obtenerPrestamos();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        String fecha = LocalDateTime.now().format(formatter);
+        String pathingArchivo = "src/main/resources/exportaciones/datos_prestamos_json_" + fecha + ".json";
+        exportarJson(prestamos, pathingArchivo);
+    }
 }
 

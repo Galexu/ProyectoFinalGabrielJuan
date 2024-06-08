@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -35,6 +36,9 @@ public class ControladorModificarSocio {
 
     @FXML
     private ImageView imagenSocioView;
+
+    @FXML
+    private StackPane stackPaneImagenSocio;
 
     private byte[] imagenSocio;
 
@@ -118,6 +122,8 @@ public class ControladorModificarSocio {
 
     @FXML
     void initialize() {
+        stackPaneImagenSocio.getStyleClass().add("border-default");
+
         if (socio != null) {
             campoNombre.setText(socio.getNombre());
             campoDireccion.setText(socio.getDireccion());

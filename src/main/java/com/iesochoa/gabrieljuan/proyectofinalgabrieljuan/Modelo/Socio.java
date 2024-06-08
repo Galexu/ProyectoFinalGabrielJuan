@@ -1,5 +1,7 @@
 package com.iesochoa.gabrieljuan.proyectofinalgabrieljuan.Modelo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Arrays;
 
 public class Socio {
@@ -8,7 +10,9 @@ public class Socio {
     private String direccion;
     private String telefono;
     private String email;
-    private byte[] socioFoto;
+
+    @SerializedName("foto")
+    private transient byte[] socioFoto;
 
     public Socio(int socioId, String nombre, String direccion, String telefono, String email, byte[] socioFoto) {
         this.socioId = socioId;

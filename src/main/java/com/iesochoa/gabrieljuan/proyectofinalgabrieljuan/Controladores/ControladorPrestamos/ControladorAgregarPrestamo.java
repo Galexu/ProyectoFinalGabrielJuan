@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
@@ -54,6 +55,12 @@ public class ControladorAgregarPrestamo implements ControladorPrestamoSelecciona
 
     @FXML
     private ImageView imagenSocioView;
+
+    @FXML
+    private StackPane stackPaneImagenSocio;
+
+    @FXML
+    private StackPane stackPaneImagenLibro;
 
     private byte[] imagenLibro;
 
@@ -152,6 +159,9 @@ public class ControladorAgregarPrestamo implements ControladorPrestamoSelecciona
 
     @FXML
     void initialize() {
+        stackPaneImagenLibro.getStyleClass().add("border-default");
+        stackPaneImagenSocio.getStyleClass().add("border-default");
+
         for (MenuItem menuItem : estadoMenuButton.getItems()) {
             menuItem.setOnAction(event -> {
                 estadoMenuButton.setText(menuItem.getText());

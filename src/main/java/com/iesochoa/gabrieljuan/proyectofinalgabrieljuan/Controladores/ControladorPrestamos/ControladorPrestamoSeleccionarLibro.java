@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
@@ -48,6 +49,9 @@ public class ControladorPrestamoSeleccionarLibro {
     @FXML
     private ImageView imagenLibroView;
 
+    @FXML
+    private StackPane stackPaneImagenLibro;
+
     private OnLibroSelectedListener libroSelectedListener;
 
     @FXML
@@ -77,6 +81,8 @@ public class ControladorPrestamoSeleccionarLibro {
 
     @FXML
     void initialize() {
+        stackPaneImagenLibro.getStyleClass().add("border-default");
+
         Styles.toggleStyleClass(tablaLibros, Styles.BORDERED);
         Styles.toggleStyleClass(tablaLibros, Styles.STRIPED);
         idColumn.setCellValueFactory(new PropertyValueFactory<>("libroId"));

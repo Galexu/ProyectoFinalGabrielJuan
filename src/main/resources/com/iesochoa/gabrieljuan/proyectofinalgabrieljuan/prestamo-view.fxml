@@ -20,20 +20,30 @@
     <children>
         <AnchorPane layoutY="654.0" prefHeight="96.0" prefWidth="1300.0" style="-fx-border-color: darkgray; -fx-border-width: 2 0 0 0;">
             <children>
-            <Button fx:id="InicioButton" layoutX="1027.0" layoutY="28.0" mnemonicParsing="false" onAction="#onClickInicio" prefHeight="45.0" prefWidth="100.0" text="Inicio" />
-            <MenuButton contentDisplay="TOP" layoutX="1145.0" layoutY="27.0" mnemonicParsing="false" popupSide="TOP" prefHeight="45.0" prefWidth="140.0" text="Cambiar Tema">
-               <items>
-                  <MenuItem fx:id="darkPrime" mnemonicParsing="false" onAction="#onClickDarkPrime" text="Dark" />
-                  <MenuItem fx:id="lightPrime" mnemonicParsing="false" onAction="#onClickLightPrime" text="Light" />
-                  <MenuItem fx:id="nordDark" mnemonicParsing="false" onAction="#onClickNordDark" text="Grisaceo" />
-                  <MenuItem fx:id="dracula" mnemonicParsing="false" onAction="#onClickDracula" text="Dracula" />
-               </items>
-            </MenuButton>
             <HBox alignment="CENTER" layoutY="15.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
                <children>
                   <Button fx:id="libroButton" mnemonicParsing="false" onAction="#onClickLibro" prefHeight="45.0" prefWidth="100.0" text="Libro" />
                   <Button fx:id="socioButton" mnemonicParsing="false" onAction="#onClickSocio" prefHeight="45.0" prefWidth="100.0" text="Socio" />
                   <Button fx:id="prestamoButton" mnemonicParsing="false" onAction="#onClickPrestamo" prefHeight="45.0" prefWidth="100.0" text="Prestamo" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" layoutX="851.0" layoutY="13.0" prefHeight="70.0" prefWidth="435.0" spacing="20.0">
+               <children>
+                  <Button fx:id="InicioButton" mnemonicParsing="false" onAction="#onClickInicio" prefHeight="45.0" prefWidth="100.0" text="Inicio" />
+                  <MenuButton alignment="CENTER" mnemonicParsing="false" popupSide="TOP" prefHeight="45.0" prefWidth="140.0" text="Exportar Datos">
+                     <items>
+                        <MenuItem fx:id="buttonJson" mnemonicParsing="false" onAction="#onClickJson" text="Json" />
+                        <MenuItem fx:id="buttonCSV" mnemonicParsing="false" onAction="#onClickCSV" text="CSV" />
+                     </items>
+                  </MenuButton>
+                  <MenuButton alignment="CENTER" contentDisplay="TOP" mnemonicParsing="false" popupSide="TOP" prefHeight="45.0" prefWidth="140.0" text="Cambiar Tema">
+                     <items>
+                        <MenuItem fx:id="darkPrime" mnemonicParsing="false" onAction="#onClickDarkPrime" text="Dark" />
+                        <MenuItem fx:id="lightPrime" mnemonicParsing="false" onAction="#onClickLightPrime" text="Light" />
+                        <MenuItem fx:id="nordDark" mnemonicParsing="false" onAction="#onClickNordDark" text="Grisaceo" />
+                        <MenuItem fx:id="dracula" mnemonicParsing="false" onAction="#onClickDracula" text="Dracula" />
+                     </items>
+                  </MenuButton>
                </children>
             </HBox>
             </children>

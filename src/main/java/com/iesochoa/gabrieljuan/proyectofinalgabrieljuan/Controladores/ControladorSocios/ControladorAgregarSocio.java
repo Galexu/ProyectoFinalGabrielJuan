@@ -6,9 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -36,6 +38,10 @@ public class ControladorAgregarSocio {
     private byte[] imagenSocio;
 
     private Runnable onSocioChangeListener;
+
+    @FXML
+    private StackPane stackPaneImagenSocio;
+
 
     public void setOnSocioChangeListener(Runnable onLibroChangeListener) {
         this.onSocioChangeListener = onLibroChangeListener;
@@ -117,5 +123,11 @@ public class ControladorAgregarSocio {
         alert.setContentText("Por favor, introduzca los campos correctamente.");
 
         alert.showAndWait();
+
+    }
+
+    @FXML
+    void initialize() {
+        stackPaneImagenSocio.getStyleClass().add("border-default");
     }
 }
