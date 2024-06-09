@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SocioDAO {
+
+    /**
+     * Agrega un nuevo socio a la base de datos.
+     *
+     * @param socio El socio a agregar.
+     */
     public void agregarSocio(Socio socio) {
         String sql = "INSERT INTO socios (socio_id, nombre, direccion, telefono, email, socio_foto) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -23,6 +29,17 @@ public class SocioDAO {
         }
     }
 
+    /**
+     * Busca socios en la base de datos según varios criterios.
+     *
+     * @param criterioBusqueda El criterio de búsqueda.
+     * @param buscarPorId Si se debe buscar por ID del socio.
+     * @param buscarPorNombre Si se debe buscar por nombre.
+     * @param buscarPorDireccion Si se debe buscar por dirección.
+     * @param buscarPorTelefono Si se debe buscar por teléfono.
+     * @param buscarPorEmail Si se debe buscar por email.
+     * @return Una lista de socios que coinciden con los criterios de búsqueda.
+     */
     public List<Socio> buscarSocioCheck(String criterioBusqueda, boolean buscarPorId, boolean buscarPorNombre, boolean buscarPorDireccion, boolean buscarPorTelefono, boolean buscarPorEmail) {
         List<Socio> socios = new ArrayList<>();
         String sql = "SELECT * FROM socios WHERE ";
@@ -108,6 +125,12 @@ public class SocioDAO {
         return socios;
     }
 
+
+    /**
+     * Obtiene todos los socios de la base de datos.
+     *
+     * @return Una lista de socios.
+     */
     public List<Socio> obtenerSocios() {
         List<Socio> socios = new ArrayList<>();
         String sql = "SELECT * FROM socios";
@@ -131,6 +154,11 @@ public class SocioDAO {
         return socios;
     }
 
+    /**
+     * Actualiza un socio existente en la base de datos.
+     *
+     * @param socio El socio a actualizar.
+     */
     public void actualizarSocio(Socio socio) {
         String sql = "UPDATE socios SET nombre = ?, direccion = ?, telefono = ?, email = ?, socio_foto = ? WHERE socio_id = ?";
 
@@ -148,6 +176,11 @@ public class SocioDAO {
         }
     }
 
+    /**
+     * Elimina un socio de la base de datos.
+     *
+     * @param socioId El ID del socio a eliminar.
+     */
     public void eliminarSocio(String socioId) {
         String sql = "DELETE FROM socios WHERE socio_id = ?";
 
@@ -160,6 +193,12 @@ public class SocioDAO {
         }
     }
 
+    /**
+     * Busca socios en la base de datos según un criterio de búsqueda.
+     *
+     * @param criterioBusqueda El criterio de búsqueda.
+     * @return Una lista de socios que coinciden con el criterio de búsqueda.
+     */
     public List<Socio> buscarSocios(String criterioBusqueda) {
         List<Socio> socios = new ArrayList<>();
         String sql = "SELECT * FROM socios WHERE nombre LIKE ? OR direccion LIKE ? OR telefono LIKE ? OR email LIKE ?";
@@ -188,6 +227,12 @@ public class SocioDAO {
         return socios;
     }
 
+    /**
+     * Obtiene un socio por su ID.
+     *
+     * @param socioId El ID del socio.
+     * @return El socio correspondiente al ID.
+     */
     public Socio obtenerSocioPorId(int socioId) {
         String sql = "SELECT * FROM socios WHERE socio_id = ?";
 

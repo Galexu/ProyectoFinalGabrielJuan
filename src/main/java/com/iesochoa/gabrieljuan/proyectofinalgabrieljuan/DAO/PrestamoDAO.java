@@ -7,6 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PrestamoDAO {
+
+    /**
+     * Agrega un nuevo préstamo a la base de datos.
+     *
+     * @param prestamo El préstamo a agregar.
+     */
     public void agregarPrestamo(Prestamo prestamo) {
         String sql = "INSERT INTO prestamos (copia_id, socio_id, fecha_prestamo, fecha_devolucion, fecha_limite, estado) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -24,6 +30,19 @@ public class PrestamoDAO {
         }
     }
 
+    /**
+     * Busca préstamos en la base de datos según varios criterios.
+     *
+     * @param criterioBusqueda El criterio de búsqueda.
+     * @param buscarPorId Si se debe buscar por ID del préstamo.
+     * @param buscarPorCopiaId Si se debe buscar por ID de la copia.
+     * @param buscarPorSocioId Si se debe buscar por ID del socio.
+     * @param buscarPorFechaPrestamo Si se debe buscar por fecha de préstamo.
+     * @param buscarPorFechaDevolucion Si se debe buscar por fecha de devolución.
+     * @param buscarPorFechaLimite Si se debe buscar por fecha límite.
+     * @param buscarPorEstado Si se debe buscar por estado del préstamo.
+     * @return Una lista de préstamos que coinciden con los criterios de búsqueda.
+     */
     public List<Prestamo> buscarPrestamoCheck(String criterioBusqueda, boolean buscarPorId, boolean buscarPorCopiaId, boolean buscarPorSocioId, boolean buscarPorFechaPrestamo, boolean buscarPorFechaDevolucion, boolean buscarPorFechaLimite, boolean buscarPorEstado) {
         List<Prestamo> prestamos = new ArrayList<>();
         String sql = "SELECT p.*, l.titulo, s.nombre FROM prestamos p " +
@@ -134,6 +153,12 @@ public class PrestamoDAO {
         return prestamos;
     }
 
+    /**
+     * Verifica si existe un préstamo para un libro específico.
+     *
+     * @param libroId El ID del libro.
+     * @return Verdadero si existe un préstamo para el libro, falso en caso contrario.
+     */
     public boolean existePrestamoParaLibro(int libroId) {
         String query = "SELECT COUNT(*) FROM prestamos WHERE copia_id IN (SELECT copia_id FROM ejemplares WHERE libro_id = ?)";
         try (PreparedStatement statement = ConexionDB.conectar().prepareStatement(query)) {
@@ -150,6 +175,12 @@ public class PrestamoDAO {
         return false;
     }
 
+    /**
+     * Verifica si existe un préstamo para un socio específico.
+     *
+     * @param socioId El ID del socio.
+     * @return Verdadero si existe un préstamo para el socio, falso en caso contrario.
+     */
     public boolean existePrestamoParaSocio(int socioId) {
         String query = "SELECT COUNT(*) FROM prestamos WHERE socio_id = ?";
         try (PreparedStatement statement = ConexionDB.conectar().prepareStatement(query)) {
@@ -166,6 +197,11 @@ public class PrestamoDAO {
         return false;
     }
 
+    /**
+     * Obtiene todos los préstamos de la base de datos.
+     *
+     * @return Una lista de préstamos.
+     */
     public List<Prestamo> obtenerPrestamos() {
         List<Prestamo> prestamos = new ArrayList<>();
         String sql = "SELECT prestamos.*, libros.titulo AS tituloLibro, socios.nombre AS nombreSocio " +
@@ -197,6 +233,12 @@ public class PrestamoDAO {
         return prestamos;
     }
 
+    /**
+     * Busca préstamos en la base de datos según un criterio de búsqueda.
+     *
+     * @param criterioBusqueda El criterio de búsqueda.
+     * @return Una lista de préstamos que coinciden con el criterio de búsqueda.
+     */
     public List<Prestamo> buscarPrestamos(String criterioBusqueda) {
         List<Prestamo> prestamos = new ArrayList<>();
         String sql = "SELECT prestamos.*, libros.titulo AS tituloLibro, socios.nombre AS nombreSocio " +
@@ -233,6 +275,11 @@ public class PrestamoDAO {
         return prestamos;
     }
 
+    /**
+     * Actualiza un préstamo existente en la base de datos.
+     *
+     * @param prestamo El préstamo a actualizar.
+     */
     public void actualizarPrestamo(Prestamo prestamo) {
         String sql = "UPDATE prestamos SET copia_id = ?, socio_id = ?, fecha_prestamo = ?, fecha_devolucion = ?, fecha_limite = ?, estado = ? WHERE prestamo_id = ?";
 
@@ -251,6 +298,11 @@ public class PrestamoDAO {
         }
     }
 
+    /**
+     * Elimina un préstamo de la base de datos.
+     *
+     * @param prestamoId El ID del préstamo a eliminar.
+     */
     public void eliminarPrestamo(int prestamoId) {
         String sql = "DELETE FROM prestamos WHERE prestamo_id = ?";
 

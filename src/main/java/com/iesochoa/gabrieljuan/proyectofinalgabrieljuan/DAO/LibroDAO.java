@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LibroDAO {
+
+    /**
+     * Agrega un nuevo libro a la base de datos.
+     *
+     * @param libro El libro a agregar.
+     * @return El ID del libro generado.
+     */
     public int agregarLibro(Libro libro) {
         String sql = "INSERT INTO libros (isbn, titulo, autor, ano_publicacion, genero, portada) VALUES (?, ?, ?, ?, ?, ?)";
 
@@ -30,6 +37,11 @@ public class LibroDAO {
         return 0;
     }
 
+    /**
+     * Obtiene todos los libros de la base de datos.
+     *
+     * @return Una lista de libros.
+     */
     public List<Libro> obtenerLibros() {
         List<Libro> libros = new ArrayList<>();
         String sql = "SELECT l.*, e.disponibles " +
@@ -57,6 +69,17 @@ public class LibroDAO {
         return libros;
     }
 
+    /**
+     * Busca libros en la base de datos según varios criterios.
+     *
+     * @param criterioBusqueda El criterio de búsqueda.
+     * @param buscarPorIsbn Si se debe buscar por ISBN.
+     * @param buscarPorTitulo Si se debe buscar por título.
+     * @param buscarPorAutor Si se debe buscar por autor.
+     * @param buscarPorAno Si se debe buscar por año de publicación.
+     * @param buscarPorGenero Si se debe buscar por género.
+     * @return Una lista de libros que coinciden con los criterios de búsqueda.
+     */
     public List<Libro> buscarLibroCheck(String criterioBusqueda, boolean buscarPorIsbn, boolean buscarPorTitulo, boolean buscarPorAutor, boolean buscarPorAno, boolean buscarPorGenero) {
         List<Libro> libros = new ArrayList<>();
         String sql = "SELECT l.*, e.disponibles FROM libros l LEFT JOIN ejemplares e ON l.libro_id = e.libro_id WHERE ";
@@ -140,6 +163,11 @@ public class LibroDAO {
         return libros;
     }
 
+    /**
+     * Obtiene los libros disponibles para préstamo.
+     *
+     * @return Una lista de libros disponibles para préstamo.
+     */
     public List<Libro> obtenerLibrosPrestamo() {
         List<Libro> libros = new ArrayList<>();
         String sql = "SELECT l.*, e.disponibles " +
@@ -167,6 +195,11 @@ public class LibroDAO {
         return libros;
     }
 
+    /**
+     * Actualiza un libro existente en la base de datos.
+     *
+     * @param libro El libro a actualizar.
+     */
     public void actualizarLibro(Libro libro) {
         String sql = "UPDATE libros SET isbn = ?, titulo = ?, autor = ?, ano_publicacion = ?, genero = ?, portada = ? WHERE libro_id = ?";
 
@@ -184,6 +217,11 @@ public class LibroDAO {
         }
     }
 
+    /**
+     * Elimina un libro de la base de datos.
+     *
+     * @param isbn El ISBN del libro a eliminar.
+     */
     public void eliminarLibro(String isbn) {
         String sql = "DELETE FROM libros WHERE isbn = ?";
 
@@ -195,6 +233,12 @@ public class LibroDAO {
         }
     }
 
+    /**
+     * Busca libros en la base de datos según un criterio de búsqueda.
+     *
+     * @param criterioBusqueda El criterio de búsqueda.
+     * @return Una lista de libros que coinciden con el criterio de búsqueda.
+     */
     public List<Libro> buscarLibro(String criterioBusqueda) {
         List<Libro> libros = new ArrayList<>();
         String sql = "SELECT * FROM libros WHERE isbn LIKE ? OR titulo LIKE ? OR autor LIKE ? OR ano_publicacion LIKE ? OR genero LIKE ?";
@@ -225,34 +269,13 @@ public class LibroDAO {
         return libros;
     }
 
-    public Libro buscarLibroPorId(int libroId) {
-        String sql = "SELECT * FROM libros WHERE libro_id = ?";
-
-        try (Connection con = ConexionDB.conectar();
-             PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setInt(1, libroId);
-            ResultSet rs = statement.executeQuery();
-
-            if (rs.next()) {
-                Libro libro = new Libro();
-                libro.setLibroId(rs.getInt("libro_id"));
-                libro.setIsbn(rs.getString("isbn"));
-                libro.setTitulo(rs.getString("titulo"));
-                libro.setAutor(rs.getString("autor"));
-                libro.setAnoPublicacion(rs.getInt("ano_publicacion"));
-                libro.setGenero(rs.getString("genero"));
-                libro.setPortada(rs.getBytes("portada"));
-                libro.setDisponibles(rs.getInt("disponibles"));
-                return libro;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-
-    public int encontrarIdLibro(String isbn) {
+    /**
+     * Busca el ID de un libro por su ISBN.
+     *
+     * @param isbn El ISBN del libro.
+     * @return El ID del libro.
+     */
+    public int buscarLibroIdPorIsbn(String isbn) {
         String sql = "SELECT libro_id FROM libros WHERE isbn = ?";
 
         try (Connection con = ConexionDB.conectar();
