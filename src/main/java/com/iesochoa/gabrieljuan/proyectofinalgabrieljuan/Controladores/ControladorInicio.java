@@ -101,7 +101,7 @@ public class ControladorInicio {
     void abrirEnlace(ActionEvent event) {
         try {
             // Obtener el escritorio del sistema y abrir el URI especificado en el navegador
-            Desktop.getDesktop().browse(new URI("https://github.com/Galexu?tab=repositories"));
+            Desktop.getDesktop().browse(new URI("https://github.com/Galexu/Readme-Proyecto-Final"));
         } catch (IOException | URISyntaxException e) {
             // Imprimir la traza de la excepción si se produce una IOException o URISyntaxException
             e.printStackTrace();
